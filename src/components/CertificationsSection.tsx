@@ -113,6 +113,7 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
     const atlassianCount = CERTIFICATIONS.filter(c => c.issuer.includes('Atlassian')).length;
     const oracleCount = CERTIFICATIONS.filter(c => c.issuer.includes('Oracle')).length;
     const googleCount = CERTIFICATIONS.filter(c => c.issuer.includes('Google')).length;
+    const newRelicCount = CERTIFICATIONS.filter(c => c.issuer.includes('New Relic')).length;
     const ibmCount = CERTIFICATIONS.filter(
       c => c.issuer.includes('IBM') || c.issuer.includes('Confluent')
     ).length;
@@ -123,6 +124,7 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
       { id: 'Atlassian', label: 'Atlassian', count: atlassianCount },
       { id: 'Oracle', label: 'Oracle', count: oracleCount },
       { id: 'Google', label: 'Google', count: googleCount },
+      { id: 'New Relic', label: 'New Relic', count: newRelicCount },
       { id: 'IBM', label: 'IBM', count: ibmCount },
     ];
   }, []);

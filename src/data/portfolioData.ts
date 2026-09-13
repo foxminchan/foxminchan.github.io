@@ -25,6 +25,19 @@ export const PERSONAL_INFO = {
 
 export const CERTIFICATIONS: Certification[] = [
   {
+    id: 31,
+    title: 'New Relic Verified Foundation (NVF)',
+    issuer: 'New Relic',
+    issued: 'September 13, 2026',
+    issueDate: '2026-09-13',
+    expires: 'September 13, 2028',
+    credentialId: 'NVF',
+    credentialUrl: 'https://credentials.newrelic.com/97b1bd91-3a5e-4074-b552-638b6c651537',
+    level: 'Foundations',
+    featured: false,
+    badgeImage: '/badges/new-relic-verified-foundation.png',
+  },
+  {
     id: 1,
     title: 'Oracle AI Database Certified Foundations Associate',
     issuer: 'Oracle',
@@ -34,7 +47,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: '331394636OCI26DCFA',
     credentialUrl:
       'https://catalog-education.oracle.com/pls/certview/sharebadge?id=2F016719639DA6F63E0ED3EBAC96526ACCF40DCCD58B6922F3379607824672B6',
-    category: 'AI & Machine Learning',
     level: 'Foundations',
     featured: false,
     badgeImage: '/badges/oracle-oci26dcfa.png',
@@ -49,7 +61,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: '331394636OCI26CAA',
     credentialUrl:
       'https://catalog-education.oracle.com/pls/certview/sharebadge?id=A0AA1D79E4DC9B63AAAB27C0DF59AC842BE9EBF1A07087B770E9DD28D06FBDA9',
-    category: 'Cloud & Architecture',
     level: 'Associate',
     featured: false,
     badgeImage: '/badges/oracle-oci26caa.png',
@@ -64,7 +75,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: '331394636AAI26OFA',
     credentialUrl:
       'https://catalog-education.oracle.com/pls/certview/sharebadge?id=1EF3AF2C270AC58F5F1B15E9668FC053A2D046BAA51A9B00A1A9164A8939289F',
-    category: 'AI & Machine Learning',
     level: 'Foundations',
     featured: true,
     badgeImage: '/badges/oracle-aai26ofa.png',
@@ -78,7 +88,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: 'FC09FC04FA9BF2B4',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/FC09FC04FA9BF2B4?sharingId',
-    category: 'Data Engineering & Analytics',
     level: 'Specialty',
     featured: false,
     badgeImage: '/badges/ms-specialty.svg',
@@ -91,7 +100,6 @@ export const CERTIFICATIONS: Certification[] = [
     expires: 'Sep 2028',
     credentialId: '193271891',
     credentialUrl: 'https://certificates.confluent.io/31a14809-7fe9-4245-8554-7e20f547e34f',
-    category: 'Data Engineering & Analytics',
     level: 'Specialty',
     featured: true,
     badgeImage: '/badges/confluent-flink.png',
@@ -104,7 +112,6 @@ export const CERTIFICATIONS: Certification[] = [
     expires: 'Sep 2028',
     credentialId: '193234245',
     credentialUrl: 'https://certificates.confluent.io/3ce62323-fc38-4b2b-b631-30b2db2aa351',
-    category: 'Data Engineering & Analytics',
     level: 'Foundations',
     featured: false,
     badgeImage: '/badges/confluent-foundations.png',
@@ -118,7 +125,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: '87D2B400DD17AAB1',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/87D2B400DD17AAB1?sharingId',
-    category: 'AI & Machine Learning',
     level: 'Associate',
     featured: true,
     badgeImage: '/badges/ms-associate.svg',
@@ -132,7 +138,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: 'A1DF89D189307502',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/A1DF89D189307502?sharingId',
-    category: 'Data Engineering & Analytics',
     level: 'Associate',
     featured: false,
     badgeImage: '/badges/ms-associate.svg',
@@ -146,7 +151,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: 'a1b9f93e6ce84d3d8585f9588e7622f6',
     credentialUrl:
       'https://www.credly.com/badges/ff0b3e65-3358-4554-95f6-a046873e29df/linked_in_profile',
-    category: 'Cloud & Architecture',
     level: 'Professional',
     featured: true,
     badgeImage: '/badges/gcp-pca.png',
@@ -160,7 +164,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: 'e0976e80791742dc8da71f6f6d1e7192',
     credentialUrl:
       'https://cp.certmetrics.com/atlassian/en/public/badge/c?id=60f46956d4b216006801fc42&ccat=71&date=2026-8-22',
-    category: 'Collaboration & Platforms',
     level: 'Foundations',
     featured: false,
     badgeImage: '/badges/atlassian-loom-fundamentals.png',
@@ -174,7 +177,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: '79CE6A019690F85D',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/79CE6A019690F85D?sharingId',
-    category: 'AI & Machine Learning',
     level: 'Expert',
     featured: true,
     badgeImage: '/badges/ms-expert.svg',
@@ -188,7 +190,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: 'ED07B7786AE152ED',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/ED07B7786AE152ED?sharingId',
-    category: 'AI & Machine Learning',
     level: 'Associate',
     featured: true,
     badgeImage: '/badges/ms-associate.svg',
@@ -202,7 +203,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: '198b11a4142c469dbe47ba6aa6240d34',
     credentialUrl:
       'https://cp.certmetrics.com/atlassian/en/public/badge/c?id=60f46956d4b216006801fc42&ccat=70&date=2026-8-18',
-    category: 'Collaboration & Platforms',
     level: 'Foundations',
     featured: false,
     badgeImage: '/badges/atlassian-forge-fundamentals.png',
@@ -216,7 +216,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: '8c744067851c4a02830be2ad005a690b',
     credentialUrl:
       'https://cp.certmetrics.com/atlassian/en/public/badge/c?id=60f46956d4b216006801fc42&ccat=69&date=2026-8-17',
-    category: 'Collaboration & Platforms',
     level: 'Foundations',
     featured: false,
     badgeImage: '/badges/atlassian-rovo-fundamentals.png',
@@ -230,7 +229,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: '6d196667f1a642b78a9cde7269930bab',
     credentialUrl:
       'https://cp.certmetrics.com/atlassian/en/public/badge/c?id=60f46956d4b216006801fc42&ccat=73&date=2026-8-12',
-    category: 'Collaboration & Platforms',
     level: 'Foundations',
     featured: false,
     badgeImage: '/badges/atlassian-jsm-fundamentals.png',
@@ -244,7 +242,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: 'bb4060c4912343aba9f398fb3a515f8e',
     credentialUrl:
       'https://cp.certmetrics.com/atlassian/en/public/badge/c?id=60f46956d4b216006801fc42&ccat=74&date=2026-8-11',
-    category: 'Collaboration & Platforms',
     level: 'Foundations',
     featured: false,
     badgeImage: '/badges/atlassian-cloud-fundamentals.png',
@@ -258,7 +255,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: '33D004CFFFDC3E54',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/33D004CFFFDC3E54?sharingId',
-    category: 'DevOps, IaC & Security',
     level: 'Expert',
     featured: true,
     badgeImage: '/badges/ms-expert.svg',
@@ -272,7 +268,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: 'C624FE6F90139AF',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/C624FE6F90139AF?sharingId',
-    category: 'Cloud & Architecture',
     level: 'Associate',
     featured: false,
     badgeImage: '/badges/ms-associate.svg',
@@ -286,7 +281,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: 'A6DE0EAFEDC81241',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/A6DE0EAFEDC81241?sharingId',
-    category: 'AI & Machine Learning',
     level: 'Specialty',
     featured: true,
     badgeImage: '/badges/github-agentic-ai-developer.svg',
@@ -300,7 +294,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: '35408CF39EF6CF56',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/35408CF39EF6CF56?sharingId',
-    category: 'Data Engineering & Analytics',
     level: 'Associate',
     featured: false,
     badgeImage: '/badges/ms-associate.svg',
@@ -314,7 +307,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: '194CD4C9EF83124E',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/194CD4C9EF83124E?sharingId',
-    category: 'Data Engineering & Analytics',
     level: 'Associate',
     featured: false,
     badgeImage: '/badges/ms-associate.svg',
@@ -328,7 +320,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: 'ABC312870A115AD6',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/ABC312870A115AD6?sharingId',
-    category: 'Cloud & Architecture',
     level: 'Expert',
     featured: true,
     badgeImage: '/badges/ms-expert.svg',
@@ -342,7 +333,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: 'FBA3448975351F1E',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/FBA3448975351F1E?sharingId',
-    category: 'Data Engineering & Analytics',
     level: 'Associate',
     featured: false,
     badgeImage: '/badges/ms-associate.svg',
@@ -356,7 +346,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: '6FBD0F27A8F0C86D',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/6FBD0F27A8F0C86D?sharingId',
-    category: 'Cloud & Architecture',
     level: 'Associate',
     featured: false,
     badgeImage: '/badges/ms-associate.svg',
@@ -370,7 +359,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: 'EFADBDC17F9C8CA1',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/EFADBDC17F9C8CA1?sharingId',
-    category: 'DevOps, IaC & Security',
     level: 'Specialty',
     featured: false,
     badgeImage: '/badges/github-administration.svg',
@@ -384,7 +372,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: 'F4D48DD003E1DA36',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/F4D48DD003E1DA36?sharingId',
-    category: 'AI & Machine Learning',
     level: 'Associate',
     featured: false,
     badgeImage: '/badges/ms-associate.svg',
@@ -398,7 +385,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: '74656acb-294b-45ab-9df6-4e3f1eb0a8bd',
     credentialUrl:
       'https://www.credly.com/badges/74656acb-294b-45ab-9df6-4e3f1eb0a8bd/linked_in_profile',
-    category: 'DevOps, IaC & Security',
     level: 'Associate',
     featured: true,
     badgeImage: '/badges/hashicorp-terraform.png',
@@ -412,7 +398,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: '70F97E16FA006137',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/70F97E16FA006137?sharingId',
-    category: 'DevOps, IaC & Security',
     level: 'Specialty',
     featured: true,
     badgeImage: '/badges/github-advanced-security.svg',
@@ -426,7 +411,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: 'A0F110987948685B',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/A0F110987948685B?sharingId',
-    category: 'DevOps, IaC & Security',
     level: 'Specialty',
     featured: false,
     badgeImage: '/badges/github-actions.svg',
@@ -440,7 +424,6 @@ export const CERTIFICATIONS: Certification[] = [
     credentialId: '34983B7E9FF7905C',
     credentialUrl:
       'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/34983B7E9FF7905C?sharingId',
-    category: 'AI & Machine Learning',
     level: 'Specialty',
     featured: false,
     badgeImage: '/badges/github-copilot.svg',

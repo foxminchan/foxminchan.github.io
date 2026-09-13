@@ -1,11 +1,3 @@
-export type CertCategory =
-  | 'All'
-  | 'Cloud & Architecture'
-  | 'AI & Machine Learning'
-  | 'DevOps, IaC & Security'
-  | 'Data Engineering & Analytics'
-  | 'Collaboration & Platforms';
-
 export type CertLevel =
   'Expert' | 'Associate' | 'Specialty' | 'Foundations' | 'Professional' | 'Fundamentals';
 
@@ -17,7 +9,6 @@ export interface Certification {
   expires: string;
   credentialId: string;
   credentialUrl: string;
-  category: CertCategory;
   level: CertLevel;
   featured?: boolean;
   badgeImage?: string;
