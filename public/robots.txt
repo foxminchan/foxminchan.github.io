@@ -1,5 +1,4 @@
-User-agent: *
+-e User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: /sitemap.xml
+Sitemap: https://foxminchan.github.io/sitemap.xml

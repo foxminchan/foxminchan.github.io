@@ -487,7 +487,7 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
                       className={`snap-start shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-2 cursor-pointer border ${
                         isSelected
                           ? darkMode
-                            ? 'bg-sky-600 text-white border-sky-500 font-semibold shadow-xs shadow-sky-600/30'
+                            ? 'bg-blue-700 text-white border-blue-600 font-semibold shadow-xs shadow-blue-700/30'
                             : 'bg-slate-900 text-white border-slate-900 font-semibold shadow-xs'
                           : darkMode
                             ? 'bg-slate-800/60 text-slate-300 hover:bg-slate-800 hover:text-white border-slate-700/60'
@@ -499,7 +499,7 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
                       <span
                         className={`text-[10px] font-mono px-1.5 py-0.5 rounded-full ${
                           isSelected
-                            ? 'bg-white/20 text-white'
+                            ? 'bg-black/20 text-white'
                             : darkMode
                               ? 'bg-slate-900 text-slate-400'
                               : 'bg-white text-slate-500 border border-slate-200 shadow-2xs'
@@ -551,7 +551,7 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
                       className={`snap-start shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-2 cursor-pointer border ${
                         isSelected
                           ? darkMode
-                            ? 'bg-sky-600 text-white border-sky-500 font-semibold shadow-xs shadow-sky-600/30'
+                            ? 'bg-blue-700 text-white border-blue-600 font-semibold shadow-xs shadow-blue-700/30'
                             : 'bg-slate-900 text-white border-slate-900 font-semibold shadow-xs'
                           : darkMode
                             ? 'bg-slate-800/60 text-slate-300 hover:bg-slate-800 hover:text-white border-slate-700/60'
@@ -565,7 +565,7 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
                       <span
                         className={`text-[10px] font-mono px-1.5 py-0.5 rounded-full ${
                           isSelected
-                            ? 'bg-white/20 text-white'
+                            ? 'bg-black/20 text-white'
                             : darkMode
                               ? 'bg-slate-900 text-slate-400'
                               : 'bg-white text-slate-500 border border-slate-200 shadow-2xs'
@@ -672,7 +672,6 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
                 }}
                 role="button"
                 tabIndex={0}
-                aria-label={`${cert.title} by ${cert.issuer}. Click to view credential ID and verification`}
                 className={`relative rounded-3xl border p-7 sm:p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 cursor-pointer group select-none text-left ${
                   darkMode
                     ? 'bg-slate-900/90 border-slate-800 hover:border-slate-700 hover:shadow-2xl hover:shadow-black/50'
@@ -752,15 +751,15 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
                   id="expand-certifications-btn"
                   className={`inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl font-semibold text-sm transition-all shadow-md cursor-pointer ${
                     darkMode
-                      ? 'bg-sky-600 hover:bg-sky-500 text-white shadow-sky-950/50 hover:shadow-lg'
-                      : 'bg-sky-600 hover:bg-sky-500 text-white shadow-sky-200 hover:shadow-lg'
+                      ? 'bg-blue-700 hover:bg-blue-600 text-white shadow-blue-950/50 hover:shadow-lg'
+                      : 'bg-blue-700 hover:bg-blue-600 text-white shadow-blue-200 hover:shadow-lg'
                   }`}
                 >
                   <span>View all {filteredCerts.length} certifications</span>
                   <ChevronDown className="w-4 h-4 text-white" />
                 </motion.button>
                 <span
-                  className={`text-xs font-mono mt-1 ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}
+                  className={`text-xs font-mono mt-1 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}
                 >
                   Showing 2 rows preview · {filteredCerts.length - 6} more certifications available
                 </span>

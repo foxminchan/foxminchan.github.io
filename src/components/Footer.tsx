@@ -31,7 +31,7 @@ export const Footer: React.FC<FooterProps> = ({ darkMode }) => {
               </span>
               <span className="text-xs font-mono text-sky-500">· Software Engineer</span>
             </div>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-400">
               Building resilient cloud-native architectures, distributed systems, and open-source
               tooling.
             </p>
@@ -91,7 +91,7 @@ export const Footer: React.FC<FooterProps> = ({ darkMode }) => {
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-slate-800/40 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 font-mono">
+        <div className="mt-8 pt-6 border-t border-slate-800/40 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-400 font-mono">
           <span>
             © {new Date().getFullYear()} {PERSONAL_INFO.name}. All rights reserved.
           </span>

@@ -326,6 +326,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ darkMode }) =>
                     target="_blank"
                     rel="noopener noreferrer"
                     id={`project-github-${project.id}`}
+                    aria-label={`View ${project.title} on GitHub`}
                     className="flex-1 py-2.5 px-4 rounded-xl font-semibold text-sm text-white bg-sky-600 hover:bg-sky-500 flex items-center justify-center gap-2 transition-all shadow-xs active:scale-98"
                   >
                     <Github className="w-4 h-4" />
