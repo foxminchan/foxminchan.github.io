@@ -224,6 +224,26 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
     );
   };
 
+  const isExpired = (expires?: string, refDate: Date = new Date()) => {
+    if (!hasExpiryDate(expires)) return false;
+
+    const trimmed = expires!.trim();
+    const monthYearMatch = trimmed.match(/^([a-z]+)\s+(\d{4})$/i);
+    const expiryDate = monthYearMatch
+      ? new Date(
+          Number(monthYearMatch[2]),
+          new Date(`${monthYearMatch[1]} 1, ${monthYearMatch[2]}`).getMonth() + 1,
+          0,
+          23,
+          59,
+          59,
+          999
+        )
+      : new Date(trimmed);
+
+    return !isNaN(expiryDate.getTime()) && expiryDate < refDate;
+  };
+
   // Check if a certificate was archived / achieved within the past week (past 7 days)
   const isArchivedWithinPastWeek = (cert: Certification, refDate: Date = new Date()): boolean => {
     if (typeof cert.isNew === 'boolean') {
@@ -675,6 +695,7 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
         >
           {displayedCerts.map(cert => {
             const hasExpiry = hasExpiryDate(cert.expires);
+            const expired = isExpired(cert.expires);
             const isNew = isArchivedWithinPastWeek(cert);
             return (
               <motion.div
@@ -716,6 +737,20 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
                     </span>
                   </div>
                 )}
+                {expired && (
+                  <div className="absolute top-5 right-5 z-10 pointer-events-none">
+                    <span
+                      id={`cert-expired-badge-${cert.id}`}
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase shadow-xs transition-transform duration-200 group-hover:scale-105 ${
+                        darkMode
+                          ? 'bg-red-950/90 text-red-400 border border-red-500/40 shadow-red-950/50'
+                          : 'bg-red-50 text-red-700 border border-red-300/80 shadow-xs'
+                      }`}
+                    >
+                      Expired
+                    </span>
+                  </div>
+                )}
                 {/* Centered Badge Artwork */}
                 <div className="flex items-center justify-center py-6 mb-6">
                   <LazyBadge
@@ -750,10 +785,20 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
 
                   <p
                     className={`text-sm sm:text-base font-normal pt-2 ${
-                      darkMode ? 'text-slate-300' : 'text-slate-700'
+                      expired
+                        ? darkMode
+                          ? 'text-red-400'
+                          : 'text-red-700'
+                        : darkMode
+                          ? 'text-slate-300'
+                          : 'text-slate-700'
                     }`}
                   >
-                    {hasExpiry ? `Expires ${cert.expires}` : `Achieved ${cert.issued}`}
+                    {expired
+                      ? `Expired ${cert.expires}`
+                      : hasExpiry
+                        ? `Expires ${cert.expires}`
+                        : `Achieved ${cert.issued}`}
                   </p>
                 </div>
               </motion.div>
@@ -842,6 +887,7 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
         {previewCert &&
           (() => {
             const modalHasExpiry = hasExpiryDate(previewCert.expires);
+            const modalExpired = isExpired(previewCert.expires);
             const modalIsNew = isArchivedWithinPastWeek(previewCert);
             return (
               <div
@@ -950,8 +996,14 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
                     {modalHasExpiry && (
                       <div className="flex items-center justify-between">
                         <span className="text-slate-400 font-medium">Expiration Date:</span>
-                        <span className="text-emerald-500 font-semibold">
-                          {previewCert.expires}
+                        <span
+                          className={
+                            modalExpired
+                              ? 'text-red-500 font-semibold'
+                              : 'text-emerald-500 font-semibold'
+                          }
+                        >
+                          {modalExpired ? `Expired ${previewCert.expires}` : previewCert.expires}
                         </span>
                       </div>
                     )}
