@@ -8,6 +8,7 @@ export const PERSONAL_INFO = {
   email: 'nguyenxuannhan407@gmail.com',
   github: 'https://github.com/foxminchan',
   githubUsername: 'foxminchan',
+  experienceStartDate: '2023-07-01',
   linkedin: 'https://www.linkedin.com/in/nxnhan',
   location: 'Ho Chi Minh City, Vietnam',
   metrics: [

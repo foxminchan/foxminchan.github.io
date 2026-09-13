@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { motion } from 'motion/react';
 import {
   Award,
   Search,
@@ -17,7 +17,6 @@ import {
   RotateCcw,
   Building2,
   GraduationCap,
-  Globe,
 } from 'lucide-react';
 import { CERTIFICATIONS } from '../data/portfolioData';
 import { Certification } from '../types';
@@ -46,6 +45,27 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [previewCert, setPreviewCert] = useState<Certification | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+  const previouslyFocusedElement = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!previewCert) return;
+
+    previouslyFocusedElement.current = document.activeElement as HTMLElement;
+    modalRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setPreviewCert(null);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      previouslyFocusedElement.current?.focus();
+    };
+  }, [previewCert]);
 
   // Helper to match certification level with 4-level filter
   const matchesLevel = (certLevel: string, filterId: string) => {
@@ -265,8 +285,8 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
                 darkMode ? 'text-slate-400' : 'text-slate-600'
               }`}
             >
-              A verified portfolio of 30 credentials spanning Cloud Architecture, Agentic AI
-              Systems, DevOps Engineering, and Data Streaming.
+              A verified portfolio of {CERTIFICATIONS.length} credentials spanning Cloud
+              Architecture, Agentic AI Systems, DevOps Engineering, and Data Streaming.
             </p>
           </div>
 
@@ -823,10 +843,13 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
             const modalIsNew = isArchivedWithinPastWeek(previewCert);
             return (
               <div
+                ref={modalRef}
                 className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs"
                 onClick={() => setPreviewCert(null)}
                 role="dialog"
                 aria-modal="true"
+                aria-labelledby="certification-modal-title"
+                tabIndex={-1}
               >
                 <div
                   className={`relative max-w-md w-full rounded-3xl p-6 sm:p-8 border shadow-2xl transition-all ${
@@ -860,6 +883,7 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
                     </div>
 
                     <h3
+                      id="certification-modal-title"
                       className={`text-xl font-bold leading-snug px-2 ${
                         darkMode ? 'text-white' : 'text-slate-900'
                       }`}

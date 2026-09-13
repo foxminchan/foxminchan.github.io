@@ -1,15 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import {
-  Briefcase,
-  Building2,
-  MapPin,
-  Calendar,
-  CheckCircle2,
-  TrendingUp,
-  Layers,
-  ArrowUpRight,
-} from 'lucide-react';
+import { Briefcase, Building2, MapPin, Calendar, CheckCircle2 } from 'lucide-react';
 import { EXPERIENCES } from '../data/portfolioData';
 
 interface ExperienceSectionProps {

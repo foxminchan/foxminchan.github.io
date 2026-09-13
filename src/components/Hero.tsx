@@ -1,28 +1,49 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Mail, Copy, Check, FolderGit2, Award, Download } from 'lucide-react';
-import { PERSONAL_INFO } from '../data/portfolioData';
+import { CERTIFICATIONS, PERSONAL_INFO } from '../data/portfolioData';
+import { formatThresholdCount, formatYearsExperience } from '../utils/metricFormatters';
 
 interface HeroProps {
   darkMode: boolean;
+  totalStars: number;
 }
 
-export const Hero: React.FC<HeroProps> = ({ darkMode }) => {
+export const Hero: React.FC<HeroProps> = ({ darkMode, totalStars }) => {
   const [copiedEmail, setCopiedEmail] = useState(false);
-
-  const handleCopyEmail = () => {
-    if (navigator?.clipboard?.writeText) {
-      navigator.clipboard.writeText(PERSONAL_INFO.email);
-    } else {
-      const textArea = document.createElement('textarea');
-      textArea.value = PERSONAL_INFO.email;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
+  const certificationDisplay = formatThresholdCount(CERTIFICATIONS.length);
+  const experienceDisplay = formatYearsExperience(PERSONAL_INFO.experienceStartDate);
+  const metrics = PERSONAL_INFO.metrics.map(metric => {
+    if (metric.label === 'Professional Certifications') {
+      return { ...metric, value: certificationDisplay };
     }
-    setCopiedEmail(true);
-    setTimeout(() => setCopiedEmail(false), 2000);
+    if (metric.label === 'GitHub Stars') {
+      return { ...metric, value: formatThresholdCount(totalStars) };
+    }
+    if (metric.label === 'Years Experience') {
+      return { ...metric, value: experienceDisplay };
+    }
+    return metric;
+  });
+
+  const handleCopyEmail = async () => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(PERSONAL_INFO.email);
+      } else {
+        const textArea = document.createElement('textarea');
+        textArea.value = PERSONAL_INFO.email;
+        document.body.appendChild(textArea);
+        textArea.select();
+        const copied = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        if (!copied) throw new Error('Copy command was rejected');
+      }
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 2000);
+    } catch {
+      setCopiedEmail(false);
+    }
   };
 
   return (
@@ -49,7 +70,7 @@ export const Hero: React.FC<HeroProps> = ({ darkMode }) => {
                 transition: { staggerChildren: 0.08, delayChildren: 0.04 },
               },
             }}
-            className="lg:col-span-7 flex flex-col space-y-6"
+            className="order-2 lg:order-1 lg:col-span-7 flex flex-col space-y-6"
           >
             {/* Role & Location Pill */}
             <motion.div
@@ -96,7 +117,9 @@ export const Hero: React.FC<HeroProps> = ({ darkMode }) => {
                   darkMode ? 'text-slate-300' : 'text-slate-600'
                 }`}
               >
-                {PERSONAL_INFO.bio}
+                {PERSONAL_INFO.bio
+                  .replace('2+', `${experienceDisplay}`)
+                  .replace('30+', `${certificationDisplay}`)}
               </p>
             </motion.div>
 
@@ -184,9 +207,9 @@ export const Hero: React.FC<HeroProps> = ({ darkMode }) => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.15, ease: 'easeOut' }}
-            className="lg:col-span-5 flex justify-center lg:justify-end"
+            className="order-1 lg:order-2 lg:col-span-5 flex justify-center lg:justify-end"
           >
-            <div className="relative w-full max-w-[360px] sm:max-w-[400px]">
+            <div className="relative w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[400px]">
               {/* Subtle ambient blur glow */}
               <div
                 className={`absolute -inset-2 rounded-3xl blur-2xl opacity-30 -z-10 transition-colors ${
@@ -231,7 +254,7 @@ export const Hero: React.FC<HeroProps> = ({ darkMode }) => {
 
                     <div className="px-3 py-1.5 rounded-full text-[11px] font-medium backdrop-blur-md bg-sky-500/85 text-white border border-white/20 shadow-lg flex items-center gap-1">
                       <Award className="w-3.5 h-3.5" />
-                      <span>30+ Certs</span>
+                      <span>{certificationDisplay} Certs</span>
                     </div>
                   </div>
                 </div>
@@ -286,7 +309,7 @@ export const Hero: React.FC<HeroProps> = ({ darkMode }) => {
           transition={{ duration: 0.5, delay: 0.25, ease: 'easeOut' }}
           className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4"
         >
-          {PERSONAL_INFO.metrics.map((metric, idx) => (
+          {metrics.map((metric, idx) => (
             <motion.div
               key={idx}
               whileHover={{ y: -2 }}

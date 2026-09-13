@@ -13,17 +13,21 @@ export const Footer: React.FC<FooterProps> = ({ darkMode }) => {
 
   return (
     <footer
-      className={`py-12 border-t ${
+      className={`py-10 sm:py-12 border-t ${
         darkMode
           ? 'bg-slate-950 border-slate-900 text-slate-400'
           : 'bg-white border-slate-200 text-slate-600'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex flex-col items-center sm:items-start gap-1">
-            <div className="flex items-center gap-2.5">
-              <img src="/logo.png" alt="foxminchan logo" className="w-6 h-6 object-contain" />
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-8 sm:gap-6">
+          <div className="flex w-full flex-col items-center gap-2 sm:w-auto sm:items-start">
+            <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 sm:justify-start">
+              <img
+                src="/favicon-32x32.png"
+                alt="foxminchan logo"
+                className="w-6 h-6 object-contain"
+              />
               <span
                 className={`text-base font-bold tracking-tight ${darkMode ? 'text-white' : 'text-slate-900'}`}
               >
@@ -31,14 +35,14 @@ export const Footer: React.FC<FooterProps> = ({ darkMode }) => {
               </span>
               <span className="text-xs font-mono text-sky-500">· Software Engineer</span>
             </div>
-            <p className="text-xs text-slate-400">
+            <p className="max-w-xl text-center text-xs text-slate-400 sm:text-left">
               Building resilient cloud-native architectures, distributed systems, and open-source
               tooling.
             </p>
           </div>
 
           {/* Social Links & Back to top */}
-          <div className="flex items-center gap-4">
+          <div className="flex w-full items-center justify-center gap-4 sm:w-auto">
             <a
               href={PERSONAL_INFO.github}
               target="_blank"
@@ -91,11 +95,13 @@ export const Footer: React.FC<FooterProps> = ({ darkMode }) => {
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-slate-800/40 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-400 font-mono">
-          <span>
+        <div className="mt-7 flex flex-col items-center justify-between gap-3 border-t border-slate-800/40 pt-6 text-center text-xs font-mono text-slate-400 sm:mt-8 sm:flex-row sm:gap-2 sm:text-left">
+          <span className="max-w-full">
             © {new Date().getFullYear()} {PERSONAL_INFO.name}. All rights reserved.
           </span>
-          <span>Designed with modern .NET & Cloud engineering aesthetic.</span>
+          <span className="max-w-full">
+            Designed with modern .NET & Cloud engineering aesthetic.
+          </span>
         </div>
       </div>
     </footer>

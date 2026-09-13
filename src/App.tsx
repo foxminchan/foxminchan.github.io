@@ -1,11 +1,10 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
+import { PROJECTS } from './data/portfolioData';
+import { fetchGitHubRepo } from './services/githubService';
+import { GitHubRepoData } from './types';
+
 import { CertificationsSection } from './components/CertificationsSection';
 import { ProjectsSection } from './components/ProjectsSection';
 import { ExperienceSection } from './components/ExperienceSection';
@@ -14,6 +13,44 @@ import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 
 export default function App() {
+  const [featuredData, setFeaturedData] = useState<Record<string, GitHubRepoData>>({});
+  const [refreshing, setRefreshing] = useState(false);
+
+  const loadGitHubData = async (isManualRefresh = false) => {
+    setRefreshing(isManualRefresh);
+
+    try {
+      const repos = await Promise.allSettled(
+        PROJECTS.filter(project => project.repoName).map(project =>
+          fetchGitHubRepo('foxminchan', project.repoName!, isManualRefresh)
+        )
+      );
+      const repoMap: Record<string, GitHubRepoData> = {};
+
+      repos.forEach((repo, index) => {
+        const repoName = PROJECTS.filter(project => project.repoName)[index].repoName;
+        if (repo.status === 'fulfilled' && repoName) {
+          repoMap[repoName] = repo.value;
+        }
+      });
+
+      setFeaturedData(repoMap);
+    } catch (error) {
+      console.warn('Could not complete live GitHub fetch, using cached/default metrics', error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    void loadGitHubData();
+  }, []);
+
+  const totalStars = PROJECTS.reduce((total, project) => {
+    const liveStars = project.repoName ? featuredData[project.repoName]?.starsCount : undefined;
+    return total + (liveStars ?? Number.parseInt(project.stars, 10));
+  }, 0);
+
   // Modern theme: default to dark theme
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -48,9 +85,14 @@ export default function App() {
 
       {/* Main Content */}
       <main id="main-content">
-        <Hero darkMode={darkMode} />
+        <Hero darkMode={darkMode} totalStars={totalStars} />
         <ExperienceSection darkMode={darkMode} />
-        <ProjectsSection darkMode={darkMode} />
+        <ProjectsSection
+          darkMode={darkMode}
+          featuredData={featuredData}
+          refreshing={refreshing}
+          onRefresh={() => void loadGitHubData(true)}
+        />
         <SkillsSection darkMode={darkMode} />
         <CertificationsSection darkMode={darkMode} />
         <ContactSection darkMode={darkMode} />

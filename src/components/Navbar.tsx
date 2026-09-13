@@ -15,7 +15,6 @@ import {
   X,
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
-
 interface NavbarProps {
   darkMode: boolean;
   onToggleTheme: () => void;
@@ -63,7 +62,7 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Brand Logo */}
-          <a href="#about" id="nav-brand-link" className="flex items-center gap-2.5 group">
+          <a href="#about" id="nav-brand-link" className="flex shrink-0 items-center gap-2.5 group">
             <div
               className={`w-9 h-9 rounded-xl flex items-center justify-center p-1 transition-all duration-200 border ${
                 darkMode
@@ -72,14 +71,14 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme }) => {
               }`}
             >
               <img
-                src="/logo.png"
+                src="/favicon-32x32.png"
                 alt="foxminchan logo"
                 className="w-full h-full object-contain transition-transform duration-200 group-hover:scale-110"
               />
             </div>
-            <div className="flex flex-col">
+            <div className="hidden flex-col sm:flex">
               <span
-                className={`text-base font-bold tracking-tight ${
+                className={`whitespace-nowrap text-base font-bold tracking-tight ${
                   darkMode
                     ? 'text-slate-100 group-hover:text-white'
                     : 'text-slate-900 group-hover:text-sky-700'
@@ -88,7 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme }) => {
                 {PERSONAL_INFO.name}
               </span>
               <span
-                className={`text-xs font-mono -mt-1 ${
+                className={`-mt-1 hidden text-xs font-mono sm:block ${
                   darkMode ? 'text-slate-400' : 'text-slate-500'
                 }`}
               >
@@ -98,7 +97,7 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme }) => {
           </a>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center gap-1 lg:gap-2">
+          <div className="hidden xl:flex items-center gap-1 lg:gap-2">
             {navItems.map(item => {
               const Icon = item.icon;
               return (
@@ -180,7 +179,9 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme }) => {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               id="mobile-menu-toggle"
               aria-label="Toggle navigation menu"
-              className={`md:hidden p-2 rounded-lg transition-colors ${
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-navigation-drawer"
+              className={`xl:hidden p-2 rounded-lg transition-colors ${
                 darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
@@ -205,7 +206,7 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme }) => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.22, ease: 'easeInOut' }}
-            className={`md:hidden px-4 pt-2 pb-6 border-b overflow-hidden ${
+            className={`xl:hidden px-4 pt-2 pb-6 border-b overflow-hidden ${
               darkMode
                 ? 'bg-slate-950/95 border-slate-800 text-slate-100'
                 : 'bg-white/95 border-slate-200 text-slate-900'

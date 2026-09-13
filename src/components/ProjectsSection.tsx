@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'motion/react';
 import {
   FolderGit2,
@@ -15,70 +15,47 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { PROJECTS, PERSONAL_INFO } from '../data/portfolioData';
-import { fetchGitHubRepo } from '../services/githubService';
 import { GitHubRepoData } from '../types';
+import { formatThresholdCount } from '../utils/metricFormatters';
 
 interface ProjectsSectionProps {
   darkMode: boolean;
+  featuredData: Record<string, GitHubRepoData>;
+  refreshing: boolean;
+  onRefresh: () => void;
 }
 
-export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ darkMode }) => {
-  // Live GitHub repo data keyed by repoName ('BookWorm', 'LawKnowledge')
-  const [featuredData, setFeaturedData] = useState<Record<string, GitHubRepoData>>({});
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-
+export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
+  darkMode,
+  featuredData,
+  refreshing,
+  onRefresh,
+}) => {
   // Copied clone URL feedback state: repoName -> boolean
   const [copiedRepo, setCopiedRepo] = useState<string | null>(null);
 
-  // Load GitHub data for BookWorm and LawKnowledge
-  const loadGitHubData = async (isManualRefresh = false) => {
-    if (isManualRefresh) {
-      setRefreshing(true);
-    } else {
-      setLoading(true);
-    }
-
+  const handleCopyClone = async (cloneUrl: string, repoName: string) => {
     try {
-      const [bookworm, lawknowledge] = await Promise.allSettled([
-        fetchGitHubRepo('foxminchan', 'BookWorm', isManualRefresh),
-        fetchGitHubRepo('foxminchan', 'LawKnowledge', isManualRefresh),
-      ]);
-
-      const featuredMap: Record<string, GitHubRepoData> = {};
-      if (bookworm.status === 'fulfilled') {
-        featuredMap['BookWorm'] = bookworm.value;
-      }
-      if (lawknowledge.status === 'fulfilled') {
-        featuredMap['LawKnowledge'] = lawknowledge.value;
-      }
-      setFeaturedData(featuredMap);
-    } catch (err) {
-      console.warn('Could not complete live GitHub fetch, using cached/fallback metrics', err);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
-
-  useEffect(() => {
-    loadGitHubData();
-  }, []);
-
-  const handleCopyClone = (cloneUrl: string, repoName: string) => {
-    navigator.clipboard.writeText(`git clone ${cloneUrl}`);
-    setCopiedRepo(repoName);
-    setTimeout(() => {
+      if (!navigator.clipboard?.writeText) throw new Error('Clipboard API unavailable');
+      await navigator.clipboard.writeText(`git clone ${cloneUrl}`);
+      setCopiedRepo(repoName);
+      setTimeout(() => {
+        setCopiedRepo(null);
+      }, 2500);
+    } catch {
       setCopiedRepo(null);
-    }, 2500);
+    }
   };
 
   // Calculate live cumulative stars for BookWorm and LawKnowledge
-  const totalStars = useMemo(() => {
-    const bookwormStars = featuredData['BookWorm']?.starsCount ?? 505;
-    const lawKnowledgeStars = featuredData['LawKnowledge']?.starsCount ?? 124;
-    return bookwormStars + lawKnowledgeStars;
-  }, [featuredData]);
+  const totalStars = useMemo(
+    () =>
+      PROJECTS.reduce((total, project) => {
+        const liveStars = project.repoName ? featuredData[project.repoName]?.starsCount : undefined;
+        return total + (liveStars ?? Number.parseInt(project.stars, 10));
+      }, 0),
+    [featuredData]
+  );
 
   return (
     <section id="projects" className="py-20 relative">
@@ -116,7 +93,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ darkMode }) =>
           {/* Quick GitHub Profile & Live Star Badge */}
           <div className="flex items-center gap-3">
             <button
-              onClick={() => loadGitHubData(true)}
+              onClick={onRefresh}
               disabled={refreshing}
               title="Refresh live GitHub data"
               className={`p-2 rounded-xl border text-xs transition-all ${
@@ -143,7 +120,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ darkMode }) =>
               <span>@{PERSONAL_INFO.githubUsername}</span>
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/25">
                 <Star className="w-3 h-3 fill-current" />
-                {totalStars}+ stars
+                {formatThresholdCount(totalStars)} stars
               </span>
               <ExternalLink className="w-3 h-3 text-slate-400" />
             </a>

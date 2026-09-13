@@ -19,12 +19,17 @@ interface ContactSectionProps {
 export const ContactSection: React.FC<ContactSectionProps> = ({ darkMode }) => {
   const [copiedEmail, setCopiedEmail] = useState(false);
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(PERSONAL_INFO.email);
-    setCopiedEmail(true);
-    setTimeout(() => {
+  const handleCopyEmail = async () => {
+    try {
+      if (!navigator.clipboard?.writeText) throw new Error('Clipboard API unavailable');
+      await navigator.clipboard.writeText(PERSONAL_INFO.email);
+      setCopiedEmail(true);
+      setTimeout(() => {
+        setCopiedEmail(false);
+      }, 2000);
+    } catch {
       setCopiedEmail(false);
-    }, 2000);
+    }
   };
 
   return (
