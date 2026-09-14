@@ -25,6 +25,20 @@ export const PERSONAL_INFO = {
 
 export const CERTIFICATIONS: Certification[] = [
   {
+    id: 32,
+    title: 'Oracle Data Center Operations Certified Foundations Associate',
+    issuer: 'Oracle',
+    issued: 'Sep 14, 2026',
+    issueDate: '2026-09-14',
+    expires: 'Sep 14, 2028',
+    credentialId: '331394636ODCOFA',
+    credentialUrl:
+      'https://catalog-education.oracle.com/ords/certview/sharebadge?id=6BF0F38ED90E0490C2E687E0BEC0AC4414A2E351B6EE8AE9A1BF6E42FFC524AC',
+    level: 'Foundations',
+    featured: false,
+    badgeImage: '/badges/oracle-odcofa.png',
+  },
+  {
     id: 31,
     title: 'New Relic Verified Foundation (NVF)',
     issuer: 'New Relic',
