@@ -207,7 +207,7 @@ export const Hero: React.FC<HeroProps> = ({ darkMode, totalStars }) => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.15, ease: 'easeOut' }}
-            className="order-1 lg:order-2 lg:col-span-5 flex justify-center lg:justify-end"
+            className="hidden order-1 lg:order-2 lg:col-span-5 lg:flex justify-center lg:justify-end"
           >
             <div className="relative w-full max-w-[260px] sm:max-w-[320px] lg:max-w-[400px]">
               {/* Subtle ambient blur glow */}

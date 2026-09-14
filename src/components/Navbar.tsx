@@ -14,7 +14,7 @@ import {
   Menu,
   X,
 } from 'lucide-react';
-import { PERSONAL_INFO } from '../data/portfolioData';
+import { CERTIFICATIONS, PERSONAL_INFO } from '../data/portfolioData';
 interface NavbarProps {
   darkMode: boolean;
   onToggleTheme: () => void;
@@ -44,7 +44,12 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme }) => {
     { label: 'Experience', href: '#experience', icon: Briefcase },
     { label: 'Projects', href: '#projects', icon: FolderGit2 },
     { label: 'Skills', href: '#skills', icon: Cpu },
-    { label: 'Certifications', href: '#certifications', icon: Award, badge: '30' },
+    {
+      label: 'Certifications',
+      href: '#certifications',
+      icon: Award,
+      badge: String(CERTIFICATIONS.length),
+    },
     { label: 'Contact', href: '#contact', icon: Mail },
   ];
 

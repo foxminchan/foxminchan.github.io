@@ -31,7 +31,7 @@ export const CERTIFICATIONS: Certification[] = [
     issued: 'September 13, 2026',
     issueDate: '2026-09-13',
     expires: 'September 13, 2028',
-    credentialId: 'NVF',
+    credentialId: '194026542',
     credentialUrl: 'https://credentials.newrelic.com/97b1bd91-3a5e-4074-b552-638b6c651537',
     level: 'Foundations',
     featured: false,
