@@ -110,6 +110,7 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
     const msCount = CERTIFICATIONS.filter(
       c => c.issuer.includes('Microsoft') || c.issuer.includes('GitHub')
     ).length;
+    const asanaCount = CERTIFICATIONS.filter(c => c.issuer.includes('Asana')).length;
     const atlassianCount = CERTIFICATIONS.filter(c => c.issuer.includes('Atlassian')).length;
     const oracleCount = CERTIFICATIONS.filter(c => c.issuer.includes('Oracle')).length;
     const googleCount = CERTIFICATIONS.filter(c => c.issuer.includes('Google')).length;
@@ -121,6 +122,7 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
     return [
       { id: 'All', label: 'All Issuers', count: CERTIFICATIONS.length },
       { id: 'Microsoft', label: 'Microsoft', count: msCount },
+      { id: 'Asana', label: 'Asana', count: asanaCount },
       { id: 'Atlassian', label: 'Atlassian', count: atlassianCount },
       { id: 'Oracle', label: 'Oracle', count: oracleCount },
       { id: 'Google', label: 'Google', count: googleCount },
@@ -185,6 +187,11 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
       return darkMode
         ? 'bg-blue-500/10 text-blue-400 border-blue-500/30'
         : 'bg-blue-50 text-blue-700 border-blue-200';
+    }
+    if (issuer.includes('Asana')) {
+      return darkMode
+        ? 'bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/30'
+        : 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200';
     }
     if (issuer.includes('GitHub')) {
       return darkMode

@@ -25,6 +25,19 @@ export const PERSONAL_INFO = {
 
 export const CERTIFICATIONS: Certification[] = [
   {
+    id: 34,
+    title: 'Workflow Specialist Certificate',
+    issuer: 'Asana',
+    issued: 'Sep 2026',
+    issueDate: '2026-09-18',
+    expires: 'Sep 2027',
+    credentialId: '194408131',
+    credentialUrl: 'https://certifications.asana.com/d6b2204f-3a30-4d68-a4e3-d8df4c8e8906',
+    level: 'Specialty',
+    featured: false,
+    badgeImage: '/badges/asana-ws.png',
+  },
+  {
     id: 33,
     title: 'Microsoft Certified: Identity and Access Administrator Associate',
     issuer: 'Microsoft',
