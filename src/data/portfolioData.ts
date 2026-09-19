@@ -25,6 +25,19 @@ export const PERSONAL_INFO = {
 
 export const CERTIFICATIONS: Certification[] = [
   {
+    id: 35,
+    title: 'Asana Administrator Certificate',
+    issuer: 'Asana',
+    issued: 'Sep 2026',
+    issueDate: '2026-09-19',
+    expires: 'Sep 2028',
+    credentialId: '194584617',
+    credentialUrl: 'https://certifications.asana.com/66bef4fa-69c2-4c69-a007-a9bce4031a8c',
+    level: 'Specialty',
+    featured: false,
+    badgeImage: '/badges/asana-am.png',
+  },
+  {
     id: 34,
     title: 'Workflow Specialist Certificate',
     issuer: 'Asana',
