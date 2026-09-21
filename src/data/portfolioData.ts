@@ -25,6 +25,20 @@ export const PERSONAL_INFO = {
 
 export const CERTIFICATIONS: Certification[] = [
   {
+    id: 36,
+    title: 'Microsoft Certified: Cybersecurity Architect Expert',
+    issuer: 'Microsoft',
+    issued: 'Sep 2026',
+    issueDate: '2026-09-21',
+    expires: 'Sep 2027',
+    credentialId: '798C46DAA898BCBB',
+    credentialUrl:
+      'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/798C46DAA898BCBB?sharingId',
+    level: 'Expert',
+    featured: true,
+    badgeImage: '/badges/ms-expert.svg',
+  },
+  {
     id: 35,
     title: 'Asana Administrator Certificate',
     issuer: 'Asana',
