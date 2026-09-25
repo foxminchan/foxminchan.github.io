@@ -13,14 +13,16 @@ import {
   Moon,
   Menu,
   X,
+  Share2,
 } from 'lucide-react';
 import { CERTIFICATIONS, PERSONAL_INFO } from '../data/portfolioData';
 interface NavbarProps {
   darkMode: boolean;
   onToggleTheme: () => void;
+  onOpenShare?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme }) => {
+export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme, onOpenShare }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -159,6 +161,22 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme }) => {
               <Linkedin className="w-5 h-5" />
             </a>
 
+            {onOpenShare && (
+              <button
+                onClick={onOpenShare}
+                id="nav-share-btn"
+                aria-label="Share Portfolio & View OG Card"
+                title="Social Share & OG Card Preview"
+                className={`p-2 rounded-lg transition-colors ${
+                  darkMode
+                    ? 'text-slate-300 hover:text-sky-400 hover:bg-slate-800'
+                    : 'text-slate-600 hover:text-sky-600 hover:bg-slate-100'
+                }`}
+              >
+                <Share2 className="w-5 h-5" />
+              </button>
+            )}
+
             <button
               onClick={onToggleTheme}
               id="theme-toggle-btn"
@@ -230,6 +248,28 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme }) => {
                   </a>
                 );
               })}
+
+              {onOpenShare && (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenShare();
+                  }}
+                  className={`flex items-center justify-between px-3 py-2 rounded-lg text-base font-medium text-left ${
+                    darkMode
+                      ? 'hover:bg-slate-800 text-slate-200'
+                      : 'hover:bg-slate-100 text-slate-700'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <Share2 className="w-5 h-5 text-sky-500" />
+                    <span>Social Media &amp; OG Card</span>
+                  </div>
+                  <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30 uppercase">
+                    1200×630
+                  </span>
+                </button>
+              )}
             </div>
           </motion.div>
         )}

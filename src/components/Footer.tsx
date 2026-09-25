@@ -1,12 +1,13 @@
 import React from 'react';
-import { Github, Linkedin, Mail, ArrowUp } from 'lucide-react';
+import { Github, Linkedin, Mail, ArrowUp, Share2 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 
 interface FooterProps {
   darkMode: boolean;
+  onOpenShare?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ darkMode }) => {
+export const Footer: React.FC<FooterProps> = ({ darkMode, onOpenShare }) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -80,6 +81,20 @@ export const Footer: React.FC<FooterProps> = ({ darkMode }) => {
             >
               <Mail className="w-5 h-5" />
             </a>
+            {onOpenShare && (
+              <button
+                onClick={onOpenShare}
+                className={`p-2 rounded-lg transition-colors ${
+                  darkMode
+                    ? 'text-slate-400 hover:text-sky-400 hover:bg-slate-900'
+                    : 'text-slate-600 hover:text-sky-600 hover:bg-slate-100'
+                }`}
+                aria-label="Social Media & OG Preview"
+                title="Social Media & OG Preview"
+              >
+                <Share2 className="w-5 h-5" />
+              </button>
+            )}
             <button
               onClick={scrollToTop}
               className={`p-2 rounded-lg border text-xs font-medium flex items-center gap-1 transition-colors ${

@@ -12,10 +12,12 @@ import { ExperienceSection } from './components/ExperienceSection';
 import { SkillsSection } from './components/SkillsSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
+import { SocialShareModal } from './components/SocialShareModal';
 
 export default function App() {
   const [featuredData, setFeaturedData] = useState<Record<string, GitHubRepoData>>({});
   const [refreshing, setRefreshing] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
 
   const loadGitHubData = async (isManualRefresh = false) => {
     setRefreshing(isManualRefresh);
@@ -85,7 +87,7 @@ export default function App() {
       <ScrollProgressBar darkMode={darkMode} />
 
       {/* Navigation Header */}
-      <Navbar darkMode={darkMode} onToggleTheme={toggleTheme} />
+      <Navbar darkMode={darkMode} onToggleTheme={toggleTheme} onOpenShare={() => setShareOpen(true)} />
 
       {/* Main Content */}
       <main id="main-content">
@@ -103,7 +105,14 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <Footer darkMode={darkMode} />
+      <Footer darkMode={darkMode} onOpenShare={() => setShareOpen(true)} />
+
+      {/* Social Media & OpenGraph Preview Modal */}
+      <SocialShareModal
+        isOpen={shareOpen}
+        onClose={() => setShareOpen(false)}
+        darkMode={darkMode}
+      />
     </div>
   );
 }
