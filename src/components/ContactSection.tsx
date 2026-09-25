@@ -11,6 +11,7 @@ import {
   ArrowUpRight,
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
+import { ContactQRCode } from './ContactQRCode';
 
 interface ContactSectionProps {
   darkMode: boolean;
@@ -205,6 +206,17 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ darkMode }) => {
             </div>
           </motion.a>
         </div>
+
+        {/* QR Code Quick Save Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.45, delay: 0.1 }}
+          className="mb-10"
+        >
+          <ContactQRCode darkMode={darkMode} />
+        </motion.div>
 
         {/* Location & Status Footer Banner */}
         <motion.div

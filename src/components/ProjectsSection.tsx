@@ -13,10 +13,12 @@ import {
   Check,
   Tag,
   RefreshCw,
+  Clock,
 } from 'lucide-react';
 import { PROJECTS, PERSONAL_INFO } from '../data/portfolioData';
 import { GitHubRepoData } from '../types';
 import { formatThresholdCount } from '../utils/metricFormatters';
+import { calculateReadingTime } from '../utils/readingTime';
 
 interface ProjectsSectionProps {
   darkMode: boolean;
@@ -137,6 +139,8 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
               live?.language || (project.id === 'bookworm' ? 'C#' : 'TypeScript');
             const cloneUrl = live?.cloneUrl || `${project.githubUrl}.git`;
             const topics = live?.topics || [];
+            const descriptionText = live?.description || project.description;
+            const readingTime = calculateReadingTime(descriptionText);
 
             return (
               <motion.div
@@ -205,29 +209,46 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                     </div>
                   </div>
 
-                  {/* Repository Title */}
-                  <div className="flex items-baseline gap-2 mb-2">
-                    <span
-                      className={`text-xs font-mono ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}
-                    >
-                      foxminchan /
-                    </span>
-                    <h3
-                      className={`text-2xl font-extrabold tracking-tight ${
-                        darkMode ? 'text-white' : 'text-slate-900'
-                      }`}
-                    >
-                      {project.title}
-                    </h3>
-                    <span
-                      className={`px-2 py-0.5 rounded text-[11px] font-mono font-medium border ${
+                  {/* Repository Title & Reading Time */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                    <div className="flex items-baseline gap-2">
+                      <span
+                        className={`text-xs font-mono ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}
+                      >
+                        foxminchan /
+                      </span>
+                      <h3
+                        className={`text-2xl font-extrabold tracking-tight ${
+                          darkMode ? 'text-white' : 'text-slate-900'
+                        }`}
+                      >
+                        {project.title}
+                      </h3>
+                      <span
+                        className={`px-2 py-0.5 rounded text-[11px] font-mono font-medium border ${
+                          darkMode
+                            ? 'bg-slate-800 text-slate-300 border-slate-700'
+                            : 'bg-slate-100 text-slate-600 border-slate-200'
+                        }`}
+                      >
+                        {languageDisplay}
+                      </span>
+                    </div>
+
+                    {/* Estimated Reading Time */}
+                    <div
+                      id={`reading-time-${project.id}`}
+                      title={`Estimated reading time for description: ~${readingTime.seconds}s (${readingTime.words} words at 200 wpm)`}
+                      aria-label={`Estimated reading time: ${readingTime.text}`}
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border transition-colors ${
                         darkMode
-                          ? 'bg-slate-800 text-slate-300 border-slate-700'
-                          : 'bg-slate-100 text-slate-600 border-slate-200'
+                          ? 'bg-slate-800/80 text-slate-300 border-slate-700/80 hover:border-slate-600'
+                          : 'bg-slate-100 text-slate-600 border-slate-200 hover:border-slate-300'
                       }`}
                     >
-                      {languageDisplay}
-                    </span>
+                      <Clock className="w-3 h-3 text-sky-400" />
+                      <span>{readingTime.text}</span>
+                    </div>
                   </div>
 
                   {/* Description */}
@@ -236,7 +257,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
                       darkMode ? 'text-slate-300' : 'text-slate-600'
                     }`}
                   >
-                    {live?.description || project.description}
+                    {descriptionText}
                   </p>
 
                   {/* Highlights */}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { PROJECTS } from './data/portfolioData';
@@ -80,6 +81,9 @@ export default function App() {
         darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'
       }`}
     >
+      {/* Scroll Progress Indicator (Viewport-Top & Long Section Tracking) */}
+      <ScrollProgressBar darkMode={darkMode} />
+
       {/* Navigation Header */}
       <Navbar darkMode={darkMode} onToggleTheme={toggleTheme} />
 

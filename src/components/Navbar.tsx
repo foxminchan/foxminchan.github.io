@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useSpring } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   Terminal,
   Award,
@@ -23,13 +23,6 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -195,12 +188,6 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme }) => {
           </div>
         </div>
       </div>
-
-      {/* Reading Progress Indicator */}
-      <motion.div
-        className="h-[2px] bg-gradient-to-r from-sky-500 via-indigo-500 to-sky-400 origin-left"
-        style={{ scaleX }}
-      />
 
       {/* Mobile menu drawer */}
       <AnimatePresence>
