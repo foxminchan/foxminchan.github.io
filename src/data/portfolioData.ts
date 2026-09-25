@@ -25,6 +25,20 @@ export const PERSONAL_INFO = {
 
 export const CERTIFICATIONS: Certification[] = [
   {
+    id: 37,
+    title: 'Oracle Cloud Infrastructure Certified AI Foundations Associate',
+    issuer: 'Oracle',
+    issued: 'Sep 2026',
+    issueDate: '2026-09-25',
+    expires: 'Sep 2028',
+    credentialId: '331394636OCI26AICFA',
+    credentialUrl:
+      'https://catalog-education.oracle.com/ords/certview/sharebadge?id=0444BCF33CA892E89B945059A4278C4BD35B8A3AD279F2EE4ECC3566CD056227',
+    level: 'Foundations',
+    featured: true,
+    badgeImage: '/badges/oracle-oci26aicfa.png',
+  },
+  {
     id: 36,
     title: 'Microsoft Certified: Cybersecurity Architect Expert',
     issuer: 'Microsoft',
