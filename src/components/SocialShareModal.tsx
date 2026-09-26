@@ -39,8 +39,8 @@ export const SocialShareModal: React.FC<SocialShareModalProps> = ({
       ? window.location.origin
       : 'https://ais-pre-fiz6fotqwsv3jer6ehdytd-922523362036.asia-southeast1.run.app';
 
-  const shareTitle = `${PERSONAL_INFO.name} | Software Engineer Portfolio`;
-  const shareText = `Check out ${PERSONAL_INFO.name}'s Software Engineer portfolio – enterprise .NET microservices, cloud-native architecture & 30+ certifications:`;
+  const shareTitle = `${PERSONAL_INFO.name} | Cloud • Software • AI Engineer`;
+  const shareText = `Building cloud-native systems, AI agents & developer platforms with .NET – explore ${PERSONAL_INFO.name}'s portfolio & 30+ certifications:`;
 
   const handleCopyLink = async () => {
     try {
@@ -263,11 +263,11 @@ export const SocialShareModal: React.FC<SocialShareModalProps> = ({
                         {currentUrl.replace(/^https?:\/\//, '')}
                       </p>
                       <h4 className="text-sm font-bold text-white line-clamp-1 mt-0.5">
-                        Nhan Nguyen | Software Engineer Portfolio
+                        Nhan Nguyen | Cloud • Software • AI Engineer
                       </h4>
                       <p className="text-xs text-slate-400 line-clamp-2 mt-1">
-                        Enterprise .NET microservices, cloud-native architecture, 30+ certifications
-                        from Microsoft, Oracle, Google, and open-source projects.
+                        Building cloud-native systems, AI agents, and developer platforms with .NET.
+                        Portfolio of Nhan Nguyen featuring enterprise microservices and 30+ certifications.
                       </p>
                     </div>
                   </div>
@@ -313,7 +313,7 @@ export const SocialShareModal: React.FC<SocialShareModalProps> = ({
                     </div>
                     <div className="p-3 bg-slate-800/80 border-t border-slate-700">
                       <h4 className="text-sm font-bold text-white line-clamp-1">
-                        Nhan Nguyen | Software Engineer Portfolio
+                        Nhan Nguyen | Cloud • Software • AI Engineer
                       </h4>
                       <p className="text-[11px] font-mono text-slate-400 mt-0.5">
                         {currentUrl.replace(/^https?:\/\//, '')}
@@ -354,10 +354,10 @@ export const SocialShareModal: React.FC<SocialShareModalProps> = ({
                         {currentUrl.replace(/^https?:\/\//, '').toUpperCase()}
                       </span>
                       <h4 className="text-sm font-bold text-white line-clamp-1 mt-0.5">
-                        Nhan Nguyen | Software Engineer Portfolio
+                        Nhan Nguyen | Cloud • Software • AI Engineer
                       </h4>
                       <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">
-                        Enterprise .NET microservices, cloud-native architecture, 30+ certifications.
+                        Building cloud-native systems, AI agents &amp; developer platforms with .NET.
                       </p>
                     </div>
                   </div>
@@ -371,11 +371,11 @@ export const SocialShareModal: React.FC<SocialShareModalProps> = ({
                     <div>
                       <span className="text-xs font-semibold text-sky-400">Nhan Nguyen Portfolio</span>
                       <h4 className="text-sm font-bold text-white mt-0.5">
-                        Nhan Nguyen | Software Engineer Portfolio
+                        Nhan Nguyen | Cloud • Software • AI Engineer
                       </h4>
                       <p className="text-xs text-slate-400 mt-1">
-                        Software Engineer portfolio showcasing enterprise .NET microservices,
-                        cloud-native architecture, 30+ certifications, and open-source projects.
+                        Building cloud-native systems, AI agents, and developer platforms with .NET.
+                        Portfolio of Nhan Nguyen featuring enterprise microservices and 30+ certifications.
                       </p>
                     </div>
                     <div className="rounded-lg overflow-hidden border border-slate-800 aspect-[1200/630] w-full bg-slate-950">

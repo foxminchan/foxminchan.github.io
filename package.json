@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "generate:og": "tsx scripts/generate-og.ts",
-    "build": "tsx scripts/generate-og.ts && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
@@ -36,7 +35,6 @@
     "autoprefixer": "^10.4.21",
     "esbuild": "^0.25.0",
     "prettier": "^3.9.6",
-    "sharp": "^0.35.4",
     "tailwindcss": "^4.1.14",
     "tsx": "^4.21.0",
     "typescript": "~5.8.2",

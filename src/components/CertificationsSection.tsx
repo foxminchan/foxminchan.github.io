@@ -21,6 +21,8 @@ import {
 import { CERTIFICATIONS } from '../data/portfolioData';
 import { Certification } from '../types';
 import { LazyBadge } from './LazyBadge';
+import { SECTION_READING_TIMES } from '../utils/readingTime';
+import { ReadingTimeBadge } from './ReadingTimeBadge';
 
 interface CertificationsSectionProps {
   darkMode: boolean;
@@ -298,9 +300,16 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
           className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8"
         >
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-500 border border-sky-500/20 mb-3">
-              <Award className="w-3.5 h-3.5" />
-              <span>Verified Industry Credentials ({CERTIFICATIONS.length})</span>
+            <div className="flex flex-wrap items-center gap-2.5 mb-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-500 border border-sky-500/20">
+                <Award className="w-3.5 h-3.5" />
+                <span>Verified Industry Credentials ({CERTIFICATIONS.length})</span>
+              </div>
+              <ReadingTimeBadge
+                text={SECTION_READING_TIMES.certifications.text}
+                words={SECTION_READING_TIMES.certifications.words}
+                darkMode={darkMode}
+              />
             </div>
             <h2
               className={`text-3xl sm:text-4xl font-extrabold tracking-tight ${

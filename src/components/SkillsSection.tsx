@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Server, Cloud, GitBranch, Bot, Code2 } from 'lucide-react';
 import { SKILL_GROUPS } from '../data/portfolioData';
+import { SECTION_READING_TIMES } from '../utils/readingTime';
+import { ReadingTimeBadge } from './ReadingTimeBadge';
 
 interface SkillsSectionProps {
   darkMode: boolean;
@@ -34,9 +36,16 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ darkMode }) => {
           transition={{ duration: 0.45 }}
           className="mb-10"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20 mb-3">
-            <Code2 className="w-3.5 h-3.5" />
-            <span>Technical Capabilities</span>
+          <div className="flex flex-wrap items-center gap-2.5 mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20">
+              <Code2 className="w-3.5 h-3.5" />
+              <span>Technical Capabilities</span>
+            </div>
+            <ReadingTimeBadge
+              text={SECTION_READING_TIMES.skills.text}
+              words={SECTION_READING_TIMES.skills.words}
+              darkMode={darkMode}
+            />
           </div>
           <h2
             className={`text-3xl sm:text-4xl font-extrabold tracking-tight ${

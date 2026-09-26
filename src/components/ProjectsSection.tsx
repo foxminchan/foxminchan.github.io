@@ -18,7 +18,8 @@ import {
 import { PROJECTS, PERSONAL_INFO } from '../data/portfolioData';
 import { GitHubRepoData } from '../types';
 import { formatThresholdCount } from '../utils/metricFormatters';
-import { calculateReadingTime } from '../utils/readingTime';
+import { calculateReadingTime, SECTION_READING_TIMES } from '../utils/readingTime';
+import { ReadingTimeBadge } from './ReadingTimeBadge';
 
 interface ProjectsSectionProps {
   darkMode: boolean;
@@ -71,9 +72,16 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({
           className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10"
         >
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20 mb-3">
-              <FolderGit2 className="w-3.5 h-3.5" />
-              <span>Open-Source & Architectures</span>
+            <div className="flex flex-wrap items-center gap-2.5 mb-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20">
+                <FolderGit2 className="w-3.5 h-3.5" />
+                <span>Open-Source & Architectures</span>
+              </div>
+              <ReadingTimeBadge
+                text={SECTION_READING_TIMES.projects.text}
+                words={SECTION_READING_TIMES.projects.words}
+                darkMode={darkMode}
+              />
             </div>
             <h2
               className={`text-3xl sm:text-4xl font-extrabold tracking-tight ${

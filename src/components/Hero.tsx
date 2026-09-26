@@ -3,6 +3,8 @@ import { motion } from 'motion/react';
 import { ArrowRight, Mail, Copy, Check, FolderGit2, Award, Download } from 'lucide-react';
 import { CERTIFICATIONS, PERSONAL_INFO } from '../data/portfolioData';
 import { formatThresholdCount, formatYearsExperience } from '../utils/metricFormatters';
+import { getTotalPortfolioReadingTime } from '../utils/readingTime';
+import { ReadingTimeBadge } from './ReadingTimeBadge';
 
 interface HeroProps {
   darkMode: boolean;
@@ -11,6 +13,7 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ darkMode, totalStars }) => {
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const totalReadingTime = getTotalPortfolioReadingTime();
   const certificationDisplay = formatThresholdCount(CERTIFICATIONS.length);
   const experienceDisplay = formatYearsExperience(PERSONAL_INFO.experienceStartDate);
   const metrics = PERSONAL_INFO.metrics.map(metric => {
@@ -72,22 +75,33 @@ export const Hero: React.FC<HeroProps> = ({ darkMode, totalStars }) => {
             }}
             className="order-2 lg:order-1 lg:col-span-7 flex flex-col space-y-6"
           >
-            {/* Role & Location Pill */}
+            {/* Role & Location Pill + Estimated Reading Time */}
             <motion.div
               variants={{
                 hidden: { opacity: 0, y: 12 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
               }}
-              className={`inline-flex items-center gap-2 self-start px-3.5 py-1.5 rounded-full text-xs font-medium border shadow-xs backdrop-blur-md transition-colors ${
-                darkMode
-                  ? 'bg-slate-900/80 border-slate-800 text-slate-300'
-                  : 'bg-white border-slate-200 text-slate-700 shadow-2xs'
-              }`}
+              className="flex flex-wrap items-center gap-2.5 self-start"
             >
-              <span className="w-2 h-2 rounded-full bg-sky-500" />
-              <span className="font-semibold text-sky-500">Software Engineer</span>
-              <span className="opacity-30">·</span>
-              <span>Ho Chi Minh City, Vietnam</span>
+              <div
+                className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium border shadow-xs backdrop-blur-md transition-colors ${
+                  darkMode
+                    ? 'bg-slate-900/80 border-slate-800 text-slate-300'
+                    : 'bg-white border-slate-200 text-slate-700 shadow-2xs'
+                }`}
+              >
+                <span className="w-2 h-2 rounded-full bg-sky-500" />
+                <span className="font-semibold text-sky-500">Software Engineer</span>
+                <span className="opacity-30">·</span>
+                <span>Ho Chi Minh City, Vietnam</span>
+              </div>
+
+              <ReadingTimeBadge
+                text={`${totalReadingTime.text} total`}
+                words={totalReadingTime.words}
+                variant="header"
+                darkMode={darkMode}
+              />
             </motion.div>
 
             {/* Headline */}

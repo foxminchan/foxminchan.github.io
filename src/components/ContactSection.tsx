@@ -12,6 +12,8 @@ import {
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { ContactQRCode } from './ContactQRCode';
+import { SECTION_READING_TIMES } from '../utils/readingTime';
+import { ReadingTimeBadge } from './ReadingTimeBadge';
 
 interface ContactSectionProps {
   darkMode: boolean;
@@ -49,9 +51,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ darkMode }) => {
           transition={{ duration: 0.45 }}
           className="text-center max-w-2xl mx-auto mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-500 border border-sky-500/20 mb-3">
-            <Mail className="w-3.5 h-3.5" />
-            <span>Get In Touch</span>
+          <div className="flex flex-wrap items-center justify-center gap-2.5 mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-500 border border-sky-500/20">
+              <Mail className="w-3.5 h-3.5" />
+              <span>Get In Touch</span>
+            </div>
+            <ReadingTimeBadge
+              text={SECTION_READING_TIMES.contact.text}
+              words={SECTION_READING_TIMES.contact.words}
+              darkMode={darkMode}
+            />
           </div>
           <h2
             className={`text-3xl sm:text-4xl font-extrabold tracking-tight ${

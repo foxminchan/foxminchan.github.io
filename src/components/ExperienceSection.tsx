@@ -2,10 +2,31 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Briefcase, Building2, MapPin, Calendar, CheckCircle2 } from 'lucide-react';
 import { EXPERIENCES } from '../data/portfolioData';
+import { SECTION_READING_TIMES } from '../utils/readingTime';
+import { ReadingTimeBadge } from './ReadingTimeBadge';
 
 interface ExperienceSectionProps {
   darkMode: boolean;
 }
+
+const renderFormattedText = (text: string, darkMode: boolean) => {
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return parts.map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return (
+        <strong
+          key={index}
+          className={`font-semibold ${
+            darkMode ? 'text-white' : 'text-slate-900'
+          }`}
+        >
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    return part;
+  });
+};
 
 export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ darkMode }) => {
   return (
@@ -24,9 +45,16 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ darkMode }
           transition={{ duration: 0.45 }}
           className="mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 mb-3">
-            <Briefcase className="w-3.5 h-3.5" />
-            <span>Career & Enterprise Delivery</span>
+          <div className="flex flex-wrap items-center gap-2.5 mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+              <Briefcase className="w-3.5 h-3.5" />
+              <span>Career & Enterprise Delivery</span>
+            </div>
+            <ReadingTimeBadge
+              text={SECTION_READING_TIMES.experience.text}
+              words={SECTION_READING_TIMES.experience.words}
+              darkMode={darkMode}
+            />
           </div>
           <h2
             className={`text-3xl sm:text-4xl font-extrabold tracking-tight ${
@@ -143,7 +171,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ darkMode }
                             >
                               <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
                               <span className={darkMode ? 'text-slate-300' : 'text-slate-700'}>
-                                {point}
+                                {renderFormattedText(point, darkMode)}
                               </span>
                             </li>
                           ))}
@@ -179,7 +207,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({ darkMode }
                       >
                         <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
                         <span className={darkMode ? 'text-slate-300' : 'text-slate-700'}>
-                          {point}
+                          {renderFormattedText(point, darkMode)}
                         </span>
                       </li>
                     ))}

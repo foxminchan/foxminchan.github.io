@@ -1,6 +1,7 @@
 {
-  "name": "Nhan Nguyen | Software Engineer Portfolio",
+  "name": "Nhan Nguyen | Cloud • Software • AI Engineer",
   "short_name": "foxminchan",
+  "description": "Building cloud-native systems, AI agents, and developer platforms with .NET.",
   "icons": [
     {
       "src": "/favicon-16x16.png",

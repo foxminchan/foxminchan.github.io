@@ -5,21 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primary SEO Meta Tags -->
-    <title>Nhan Nguyen | Software Engineer Portfolio</title>
-    <meta name="title" content="Nhan Nguyen | Software Engineer Portfolio" />
+    <title>Nhan Nguyen | Cloud • Software • AI Engineer</title>
+    <meta name="title" content="Nhan Nguyen | Cloud • Software • AI Engineer" />
     <meta
       name="description"
-      content="Software Engineer portfolio showcasing enterprise .NET microservices, cloud-native architecture, 30+ certifications, and open-source projects."
+      content="Building cloud-native systems, AI agents, and developer platforms with .NET. Portfolio of Nhan Nguyen featuring enterprise microservices and 30+ certifications."
     />
     <meta
       name="keywords"
-      content="Nhan Nguyen, Software Engineer, .NET, C#, ASP.NET Core, Cloud-Native, Microservices, Azure, Docker, Kubernetes, CI/CD, DevOps, Oracle Certified, Microsoft Certified, Portfolio, foxminchan"
+      content="Nhan Nguyen, Cloud Engineer, Software Engineer, AI Engineer, .NET, C#, ASP.NET Core, Cloud-Native, Microservices, Azure, Docker, Kubernetes, CI/CD, DevOps, Terraform, AI Agents, Oracle Certified, Microsoft Certified, Google Cloud Certified, Portfolio, foxminchan"
     />
     <meta name="author" content="Nhan Nguyen (foxminchan)" />
     <meta
       name="robots"
       content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
     />
+    <link rel="canonical" href="https://foxminchan.github.io/" />
     <meta name="theme-color" content="#020617" />
     <meta name="color-scheme" content="dark light" />
 
@@ -31,21 +32,22 @@
     <link rel="manifest" href="/site.webmanifest" />
 
     <!-- Open Graph / Facebook & LinkedIn -->
-    <meta property="og:type" content="profile" />
+    <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Nhan Nguyen Portfolio" />
-    <meta property="og:title" content="Nhan Nguyen | Software Engineer Portfolio" />
+    <meta property="og:url" content="https://foxminchan.github.io/" />
+    <meta property="og:title" content="Nhan Nguyen | Cloud • Software • AI Engineer" />
     <meta
       property="og:description"
-      content="Software Engineer portfolio showcasing enterprise .NET microservices, cloud-native architecture, 30+ certifications, and open-source projects."
+      content="Building cloud-native systems, AI agents, and developer platforms with .NET. Portfolio of Nhan Nguyen featuring enterprise microservices and 30+ certifications."
     />
-    <meta property="og:image" content="/og-image.png" />
-    <meta property="og:image:secure_url" content="/og-image.png" />
+    <meta property="og:image" content="https://foxminchan.github.io/og-image.png" />
+    <meta property="og:image:secure_url" content="https://foxminchan.github.io/og-image.png" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Nhan Nguyen - Software Engineer Portfolio - Enterprise Applications & Cloud-Native Architecture"
+      content="Nhan Nguyen | Cloud • Software • AI - Building cloud-native systems, AI agents and developer platforms with .NET"
     />
     <meta property="og:locale" content="en_US" />
     <meta property="profile:first_name" content="Nhan" />
@@ -56,16 +58,35 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@foxminchan" />
     <meta name="twitter:creator" content="@foxminchan" />
-    <meta name="twitter:title" content="Nhan Nguyen | Software Engineer Portfolio" />
+    <meta name="twitter:domain" content="foxminchan.github.io" />
+    <meta name="twitter:url" content="https://foxminchan.github.io/" />
+    <meta name="twitter:title" content="Nhan Nguyen | Cloud • Software • AI Engineer" />
     <meta
       name="twitter:description"
-      content="Software Engineer portfolio showcasing enterprise .NET microservices, cloud-native architecture, 30+ certifications, and open-source projects."
+      content="Building cloud-native systems, AI agents, and developer platforms with .NET. Portfolio of Nhan Nguyen featuring enterprise microservices and 30+ certifications."
     />
-    <meta name="twitter:image" content="/og-image.png" />
+    <meta name="twitter:image" content="https://foxminchan.github.io/og-image.png" />
     <meta
       name="twitter:image:alt"
-      content="Nhan Nguyen - Software Engineer Portfolio - Enterprise Applications & Cloud-Native Architecture"
+      content="Nhan Nguyen | Cloud • Software • AI - Building cloud-native systems, AI agents and developer platforms with .NET"
     />
+
+    <!-- Dynamic Origin Synchronizer for Preview & Custom Domains -->
+    <script>
+      (function () {
+        if (typeof window !== 'undefined' && window.location.origin) {
+          var origin = window.location.origin;
+          var canonical = document.querySelector('link[rel="canonical"]');
+          if (canonical && !canonical.href.includes('github.io')) {
+            canonical.href = origin + window.location.pathname;
+          }
+          var ogUrl = document.querySelector('meta[property="og:url"]');
+          if (ogUrl && !ogUrl.content.includes('github.io')) {
+            ogUrl.content = origin + window.location.pathname;
+          }
+        }
+      })();
+    </script>
 
     <!-- Structured Data (JSON-LD) for Search Engines -->
     <script type="application/ld+json">
@@ -74,12 +95,12 @@
         "@graph": [
           {
             "@type": "Person",
-            "@id": "/#person",
+            "@id": "https://foxminchan.github.io/#person",
             "name": "Nhan Nguyen",
             "alternateName": "foxminchan",
-            "image": "/og-image.png",
-            "jobTitle": "Software Engineer",
-            "description": "Software Engineer specializing in enterprise .NET backend, cloud-native microservices, CI/CD automation, and intelligent agents. Holder of 30+ industry certifications from Microsoft, Oracle, Google, and IBM.",
+            "image": "https://foxminchan.github.io/og-image.png",
+            "jobTitle": "Cloud • Software • AI Engineer",
+            "description": "Building cloud-native systems, AI agents, and developer platforms with .NET. Certified with 30+ industry credentials from Microsoft, Oracle, Google Cloud, and HashiCorp.",
             "email": "mailto:nguyenxuannhan407@gmail.com",
             "nationality": "Vietnamese",
             "address": {
@@ -88,39 +109,61 @@
               "addressCountry": "VN"
             },
             "sameAs": ["https://github.com/foxminchan", "https://www.linkedin.com/in/nxnhan"],
+            "hasCredential": [
+              {
+                "@type": "EducationalOccupationalCredential",
+                "name": "Microsoft Certified: Azure Solutions Architect Expert",
+                "recognizedBy": { "@type": "Organization", "name": "Microsoft" }
+              },
+              {
+                "@type": "EducationalOccupationalCredential",
+                "name": "Google Cloud Certified: Professional Cloud Architect",
+                "recognizedBy": { "@type": "Organization", "name": "Google Cloud" }
+              },
+              {
+                "@type": "EducationalOccupationalCredential",
+                "name": "HashiCorp Certified: Terraform Associate",
+                "recognizedBy": { "@type": "Organization", "name": "HashiCorp" }
+              },
+              {
+                "@type": "EducationalOccupationalCredential",
+                "name": "GitHub Certified: Agentic AI Developer",
+                "recognizedBy": { "@type": "Organization", "name": "GitHub" }
+              }
+            ],
             "knowsAbout": [
               ".NET",
               "C#",
               "ASP.NET Core",
-              "Cloud-Native Architecture",
+              "Cloud-Native Systems",
               "Microservices Architecture",
+              "AI Agents",
               "Docker",
               "Kubernetes",
-              "Azure Container Apps",
-              "CI/CD Automation",
+              "Terraform",
+              "Azure",
+              "Google Cloud Platform",
               "DevOps",
-              "Oracle Cloud Infrastructure",
-              "Agentic AI",
               "Distributed Systems"
             ]
           },
           {
             "@type": "ProfilePage",
-            "@id": "/#profilepage",
-            "url": "/",
-            "name": "Nhan Nguyen | Software Engineer Portfolio",
-            "description": "Software Engineer portfolio showcasing enterprise .NET microservices, cloud-native architecture, 30+ certifications, and open-source projects.",
+            "@id": "https://foxminchan.github.io/#profilepage",
+            "url": "https://foxminchan.github.io/",
+            "name": "Nhan Nguyen | Cloud • Software • AI Engineer",
+            "description": "Building cloud-native systems, AI agents, and developer platforms with .NET. Portfolio of Nhan Nguyen featuring enterprise microservices and 30+ certifications.",
             "mainEntity": {
-              "@id": "/#person"
+              "@id": "https://foxminchan.github.io/#person"
             }
           },
           {
             "@type": "WebSite",
-            "@id": "/#website",
-            "url": "/",
+            "@id": "https://foxminchan.github.io/#website",
+            "url": "https://foxminchan.github.io/",
             "name": "Nhan Nguyen Portfolio",
             "publisher": {
-              "@id": "/#person"
+              "@id": "https://foxminchan.github.io/#person"
             }
           }
         ]

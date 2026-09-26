@@ -16,6 +16,7 @@ import {
   Share2,
 } from 'lucide-react';
 import { CERTIFICATIONS, PERSONAL_INFO } from '../data/portfolioData';
+import { SECTION_READING_TIMES } from '../utils/readingTime';
 interface NavbarProps {
   darkMode: boolean;
   onToggleTheme: () => void;
@@ -35,17 +36,49 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme, onOpenS
   }, []);
 
   const navItems = [
-    { label: 'About', href: '#about', icon: Terminal },
-    { label: 'Experience', href: '#experience', icon: Briefcase },
-    { label: 'Projects', href: '#projects', icon: FolderGit2 },
-    { label: 'Skills', href: '#skills', icon: Cpu },
     {
+      id: 'about',
+      label: 'About',
+      href: '#about',
+      icon: Terminal,
+      readTime: SECTION_READING_TIMES.about?.text || '1 min read',
+    },
+    {
+      id: 'experience',
+      label: 'Experience',
+      href: '#experience',
+      icon: Briefcase,
+      readTime: SECTION_READING_TIMES.experience?.text || '2 min read',
+    },
+    {
+      id: 'projects',
+      label: 'Projects',
+      href: '#projects',
+      icon: FolderGit2,
+      readTime: SECTION_READING_TIMES.projects?.text || '2 min read',
+    },
+    {
+      id: 'skills',
+      label: 'Skills',
+      href: '#skills',
+      icon: Cpu,
+      readTime: SECTION_READING_TIMES.skills?.text || '1 min read',
+    },
+    {
+      id: 'certifications',
       label: 'Certifications',
       href: '#certifications',
       icon: Award,
       badge: String(CERTIFICATIONS.length),
+      readTime: SECTION_READING_TIMES.certifications?.text || '2 min read',
     },
-    { label: 'Contact', href: '#contact', icon: Mail },
+    {
+      id: 'contact',
+      label: 'Contact',
+      href: '#contact',
+      icon: Mail,
+      readTime: SECTION_READING_TIMES.contact?.text || '< 1 min read',
+    },
   ];
 
   return (
@@ -105,6 +138,7 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme, onOpenS
                   key={item.label}
                   href={item.href}
                   id={`nav-link-${item.label.toLowerCase()}`}
+                  title={`${item.label} section · Estimated read time: ${item.readTime}`}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                     darkMode
                       ? 'text-slate-300 hover:text-white hover:bg-slate-800/60'
@@ -240,11 +274,16 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme, onOpenS
                       <Icon className="w-5 h-5 text-sky-500" />
                       <span>{item.label}</span>
                     </div>
-                    {item.badge && (
-                      <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30">
-                        {item.badge}
+                    <div className="flex items-center gap-2">
+                      <span className="text-[11px] font-mono text-slate-400 dark:text-slate-500">
+                        {item.readTime}
                       </span>
-                    )}
+                      {item.badge && (
+                        <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/30">
+                          {item.badge}
+                        </span>
+                      )}
+                    </div>
                   </a>
                 );
               })}
