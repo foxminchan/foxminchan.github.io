@@ -1,13 +1,15 @@
 import React from 'react';
-import { Github, Linkedin, Mail, ArrowUp, Share2 } from 'lucide-react';
+import { Mail, ArrowUp, Share2, Keyboard } from 'lucide-react';
+import { Github, Linkedin } from './BrandIcons';
 import { PERSONAL_INFO } from '../data/portfolioData';
 
 interface FooterProps {
   darkMode: boolean;
   onOpenShare?: () => void;
+  onOpenShortcuts?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ darkMode, onOpenShare }) => {
+export const Footer: React.FC<FooterProps> = ({ darkMode, onOpenShare, onOpenShortcuts }) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -95,6 +97,30 @@ export const Footer: React.FC<FooterProps> = ({ darkMode, onOpenShare }) => {
                 <Share2 className="w-5 h-5" />
               </button>
             )}
+            {onOpenShortcuts && (
+              <button
+                onClick={onOpenShortcuts}
+                className={`hidden md:flex p-2 rounded-lg border text-xs font-medium items-center gap-1.5 transition-colors ${
+                  darkMode
+                    ? 'border-slate-800 text-slate-400 hover:text-white hover:bg-slate-900'
+                    : 'border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                }`}
+                aria-label="View keyboard shortcuts"
+                title="Keyboard Shortcuts (Press '?')"
+              >
+                <Keyboard className="w-4 h-4" />
+                <span>Shortcuts</span>
+                <kbd
+                  className={`px-1 text-[10px] font-mono rounded border ${
+                    darkMode
+                      ? 'bg-slate-800 text-slate-400 border-slate-700'
+                      : 'bg-slate-100 text-slate-500 border-slate-200'
+                  }`}
+                >
+                  ?
+                </kbd>
+              </button>
+            )}
             <button
               onClick={scrollToTop}
               className={`p-2 rounded-lg border text-xs font-medium flex items-center gap-1 transition-colors ${
@@ -103,6 +129,7 @@ export const Footer: React.FC<FooterProps> = ({ darkMode, onOpenShare }) => {
                   : 'border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
               aria-label="Scroll to top"
+              title="Scroll to Top (Press 'G')"
             >
               <ArrowUp className="w-4 h-4" />
               <span className="hidden sm:inline">Top</span>
@@ -114,9 +141,23 @@ export const Footer: React.FC<FooterProps> = ({ darkMode, onOpenShare }) => {
           <span className="max-w-full">
             © {new Date().getFullYear()} {PERSONAL_INFO.name}. All rights reserved.
           </span>
-          <span className="max-w-full">
-            Designed with modern .NET & Cloud engineering aesthetic.
-          </span>
+          <div className="hidden md:flex items-center gap-3">
+            {onOpenShortcuts && (
+              <button
+                onClick={onOpenShortcuts}
+                className="hover:underline text-slate-500 hover:text-sky-400 flex items-center gap-1 transition-colors"
+              >
+                <span>Press</span>
+                <kbd className="px-1 py-0.2 text-[10px] font-mono rounded border border-slate-700 bg-slate-800/50">
+                  ?
+                </kbd>
+                <span>for shortcuts</span>
+              </button>
+            )}
+            <span className="max-w-full">
+              · Designed with modern .NET &amp; Cloud engineering aesthetic.
+            </span>
+          </div>
         </div>
       </div>
     </footer>

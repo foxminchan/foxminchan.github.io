@@ -72,9 +72,7 @@ export const ReadingTimeBadge: React.FC<ReadingTimeBadgeProps> = ({
       <Clock className="w-3 h-3 text-sky-400 shrink-0" />
       <span className="font-semibold text-sky-400">{text}</span>
       {words && (
-        <span className="text-[10px] font-mono opacity-70 hidden sm:inline">
-          ({words}w)
-        </span>
+        <span className="text-[10px] font-mono opacity-70 hidden sm:inline">({words}w)</span>
       )}
     </div>
   );

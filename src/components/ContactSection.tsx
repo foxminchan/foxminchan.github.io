@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import {
-  Mail,
-  Linkedin,
-  Github,
-  MapPin,
-  Copy,
-  Check,
-  ExternalLink,
-  ArrowUpRight,
-} from 'lucide-react';
+import { Mail, MapPin, Copy, Check, ExternalLink, ArrowUpRight } from 'lucide-react';
+import { Linkedin, Github } from './BrandIcons';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { ContactQRCode } from './ContactQRCode';
 import { SECTION_READING_TIMES } from '../utils/readingTime';

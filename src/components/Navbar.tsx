@@ -7,23 +7,29 @@ import {
   FolderGit2,
   Cpu,
   Mail,
-  Github,
-  Linkedin,
   Sun,
   Moon,
   Menu,
   X,
   Share2,
+  Keyboard,
 } from 'lucide-react';
+import { Github, Linkedin } from './BrandIcons';
 import { CERTIFICATIONS, PERSONAL_INFO } from '../data/portfolioData';
 import { SECTION_READING_TIMES } from '../utils/readingTime';
 interface NavbarProps {
   darkMode: boolean;
   onToggleTheme: () => void;
   onOpenShare?: () => void;
+  onOpenShortcuts?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme, onOpenShare }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  darkMode,
+  onToggleTheme,
+  onOpenShare,
+  onOpenShortcuts,
+}) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -199,9 +205,9 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme, onOpenS
               <button
                 onClick={onOpenShare}
                 id="nav-share-btn"
-                aria-label="Share Portfolio & View OG Card"
-                title="Social Share & OG Card Preview"
-                className={`p-2 rounded-lg transition-colors ${
+                aria-label="Share Portfolio & View OG Card (Press 'S')"
+                title="Social Share & OG Card Preview (Press 'S')"
+                className={`p-2 rounded-lg transition-colors relative group ${
                   darkMode
                     ? 'text-slate-300 hover:text-sky-400 hover:bg-slate-800'
                     : 'text-slate-600 hover:text-sky-600 hover:bg-slate-100'
@@ -214,7 +220,12 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme, onOpenS
             <button
               onClick={onToggleTheme}
               id="theme-toggle-btn"
-              aria-label="Toggle light or dark theme"
+              aria-label={
+                darkMode ? "Switch to Light Theme (Press 'T')" : "Switch to Dark Theme (Press 'T')"
+              }
+              title={
+                darkMode ? "Switch to Light Theme (Press 'T')" : "Switch to Dark Theme (Press 'T')"
+              }
               className={`p-2 rounded-lg transition-colors ${
                 darkMode
                   ? 'text-amber-400 hover:bg-slate-800'
@@ -223,6 +234,31 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, onToggleTheme, onOpenS
             >
               {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
+
+            {onOpenShortcuts && (
+              <button
+                onClick={onOpenShortcuts}
+                id="nav-shortcuts-btn"
+                aria-label="View Keyboard Shortcuts (Press '?')"
+                title="Keyboard Shortcuts (Press '?')"
+                className={`hidden md:flex p-2 rounded-lg transition-colors items-center gap-1 ${
+                  darkMode
+                    ? 'text-slate-300 hover:text-white hover:bg-slate-800'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                }`}
+              >
+                <Keyboard className="w-5 h-5" />
+                <kbd
+                  className={`hidden 2xl:inline-block px-1.5 py-0.2 text-[10px] font-mono font-bold rounded border ${
+                    darkMode
+                      ? 'bg-slate-800 text-slate-400 border-slate-700'
+                      : 'bg-slate-100 text-slate-500 border-slate-200'
+                  }`}
+                >
+                  ?
+                </kbd>
+              </button>
+            )}
 
             {/* Mobile menu toggle */}
             <button

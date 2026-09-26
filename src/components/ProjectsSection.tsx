@@ -5,7 +5,6 @@ import {
   Star,
   GitFork,
   ExternalLink,
-  Github,
   CheckCircle2,
   Boxes,
   Scale,
@@ -15,6 +14,7 @@ import {
   RefreshCw,
   Clock,
 } from 'lucide-react';
+import { Github } from './BrandIcons';
 import { PROJECTS, PERSONAL_INFO } from '../data/portfolioData';
 import { GitHubRepoData } from '../types';
 import { formatThresholdCount } from '../utils/metricFormatters';

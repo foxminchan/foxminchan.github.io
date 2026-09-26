@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
+import { useAtom } from 'jotai';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { PROJECTS } from './data/portfolioData';
-import { fetchGitHubRepo } from './services/githubService';
-import { GitHubRepoData } from './types';
 
 import { CertificationsSection } from './components/CertificationsSection';
 import { ProjectsSection } from './components/ProjectsSection';
@@ -13,69 +12,76 @@ import { SkillsSection } from './components/SkillsSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { SocialShareModal } from './components/SocialShareModal';
+import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
+import { ShortcutToast } from './components/ShortcutToast';
+import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
+import { useFeaturedRepos } from './hooks/useGitHubData';
+import {
+  darkModeAtom,
+  shareModalOpenAtom,
+  shortcutsModalOpenAtom,
+  shortcutToastAtom,
+} from './store/atoms';
 
 export default function App() {
-  const [featuredData, setFeaturedData] = useState<Record<string, GitHubRepoData>>({});
-  const [refreshing, setRefreshing] = useState(false);
-  const [shareOpen, setShareOpen] = useState(false);
+  // Global atomic state with Jotai
+  const [darkMode, setDarkMode] = useAtom(darkModeAtom);
+  const [shareOpen, setShareOpen] = useAtom(shareModalOpenAtom);
+  const [shortcutsOpen, setShortcutsOpen] = useAtom(shortcutsModalOpenAtom);
+  const [toast, setToast] = useAtom(shortcutToastAtom);
+  const toastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const loadGitHubData = async (isManualRefresh = false) => {
-    setRefreshing(isManualRefresh);
+  // TanStack Query + Axios for GitHub repository metrics & star aggregation
+  const { featuredData, isFetching, refetch, totalStars } = useFeaturedRepos(PROJECTS);
 
-    try {
-      const repos = await Promise.allSettled(
-        PROJECTS.filter(project => project.repoName).map(project =>
-          fetchGitHubRepo('foxminchan', project.repoName!, isManualRefresh)
-        )
-      );
-      const repoMap: Record<string, GitHubRepoData> = {};
+  const showToast = useCallback(
+    (message: string, keyHint?: string) => {
+      if (toastTimeoutRef.current) {
+        clearTimeout(toastTimeoutRef.current);
+      }
+      setToast({ message, keyHint });
+      toastTimeoutRef.current = setTimeout(() => {
+        setToast(null);
+      }, 1800);
+    },
+    [setToast]
+  );
 
-      repos.forEach((repo, index) => {
-        const repoName = PROJECTS.filter(project => project.repoName)[index].repoName;
-        if (repo.status === 'fulfilled' && repoName) {
-          repoMap[repoName] = repo.value;
-        }
-      });
-
-      setFeaturedData(repoMap);
-    } catch (error) {
-      console.warn('Could not complete live GitHub fetch, using cached/default metrics', error);
-    } finally {
-      setRefreshing(false);
-    }
-  };
-
-  useEffect(() => {
-    void loadGitHubData();
-  }, []);
-
-  const totalStars = PROJECTS.reduce((total, project) => {
-    const liveStars = project.repoName ? featuredData[project.repoName]?.starsCount : undefined;
-    return total + (liveStars ?? Number.parseInt(project.stars, 10));
-  }, 0);
-
-  // Modern theme: default to dark theme
-  const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('portfolio_theme');
-      if (saved) return saved === 'dark';
-    }
-    return true;
-  });
-
+  // Synchronize document element class with theme atom
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('portfolio_theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('portfolio_theme', 'light');
     }
   }, [darkMode]);
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setDarkMode(prev => !prev);
-  };
+  }, [setDarkMode]);
+
+  const handleNavigateSection = useCallback((sectionId: string) => {
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+      window.history.replaceState(null, '', `#${sectionId}`);
+    }
+  }, []);
+
+  // Global Keyboard Shortcuts
+  useKeyboardShortcuts({
+    onToggleTheme: toggleTheme,
+    onOpenShare: () => setShareOpen(prev => !prev),
+    onToggleShortcutsModal: () => setShortcutsOpen(prev => !prev),
+    onCloseModals: () => {
+      setShortcutsOpen(false);
+      setShareOpen(false);
+    },
+    onRefreshData: () => void refetch(),
+    onScrollToTop: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+    onNavigateSection: handleNavigateSection,
+    showToast,
+  });
 
   return (
     <div
@@ -87,7 +93,12 @@ export default function App() {
       <ScrollProgressBar darkMode={darkMode} />
 
       {/* Navigation Header */}
-      <Navbar darkMode={darkMode} onToggleTheme={toggleTheme} onOpenShare={() => setShareOpen(true)} />
+      <Navbar
+        darkMode={darkMode}
+        onToggleTheme={toggleTheme}
+        onOpenShare={() => setShareOpen(true)}
+        onOpenShortcuts={() => setShortcutsOpen(true)}
+      />
 
       {/* Main Content */}
       <main id="main-content">
@@ -96,8 +107,8 @@ export default function App() {
         <ProjectsSection
           darkMode={darkMode}
           featuredData={featuredData}
-          refreshing={refreshing}
-          onRefresh={() => void loadGitHubData(true)}
+          refreshing={isFetching}
+          onRefresh={() => void refetch()}
         />
         <SkillsSection darkMode={darkMode} />
         <CertificationsSection darkMode={darkMode} />
@@ -105,7 +116,11 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <Footer darkMode={darkMode} onOpenShare={() => setShareOpen(true)} />
+      <Footer
+        darkMode={darkMode}
+        onOpenShare={() => setShareOpen(true)}
+        onOpenShortcuts={() => setShortcutsOpen(true)}
+      />
 
       {/* Social Media & OpenGraph Preview Modal */}
       <SocialShareModal
@@ -113,6 +128,21 @@ export default function App() {
         onClose={() => setShareOpen(false)}
         darkMode={darkMode}
       />
+
+      {/* Global Keyboard Shortcuts Modal */}
+      <KeyboardShortcutsModal
+        isOpen={shortcutsOpen}
+        onClose={() => setShortcutsOpen(false)}
+        darkMode={darkMode}
+        onToggleTheme={toggleTheme}
+        onOpenShare={() => setShareOpen(true)}
+        onRefreshData={() => void refetch()}
+        onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        onNavigateSection={handleNavigateSection}
+      />
+
+      {/* Shortcut Feedback Toast HUD */}
+      <ShortcutToast toast={toast} darkMode={darkMode} />
     </div>
   );
 }

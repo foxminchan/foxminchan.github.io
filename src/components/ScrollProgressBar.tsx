@@ -32,7 +32,7 @@ const SECTIONS: SectionMilestone[] = [
 ];
 
 export const ScrollProgressBar: React.FC<ScrollProgressBarProps> = ({ darkMode }) => {
-  const { scrollYProgress, scrollY } = useScroll();
+  const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 120,
     damping: 28,
@@ -53,7 +53,8 @@ export const ScrollProgressBar: React.FC<ScrollProgressBarProps> = ({ darkMode }
       const docHeight = document.documentElement.scrollHeight - windowHeight;
 
       // Overall page percentage
-      const totalPct = docHeight > 0 ? Math.min(100, Math.max(0, Math.round((scrollPos / docHeight) * 100))) : 0;
+      const totalPct =
+        docHeight > 0 ? Math.min(100, Math.max(0, Math.round((scrollPos / docHeight) * 100))) : 0;
       setOverallPercent(totalPct);
 
       // Only show the floating reading badge once scrolled past initial header area
@@ -77,7 +78,10 @@ export const ScrollProgressBar: React.FC<ScrollProgressBarProps> = ({ darkMode }
           currentSection = sec.id;
           // Calculate how much of this specific section has been scrolled past
           const scrolledInSection = Math.max(0, -topOffset + windowHeight * 0.2);
-          sectionProg = Math.min(100, Math.max(0, Math.round((scrolledInSection / sectionHeight) * 100)));
+          sectionProg = Math.min(
+            100,
+            Math.max(0, Math.round((scrolledInSection / sectionHeight) * 100))
+          );
           break;
         } else if (topOffset < windowHeight * 0.5) {
           currentSection = sec.id;
@@ -95,7 +99,7 @@ export const ScrollProgressBar: React.FC<ScrollProgressBarProps> = ({ darkMode }
   }, []);
 
   const activeSection = useMemo(() => {
-    return SECTIONS.find((s) => s.id === activeSectionId) || SECTIONS[0];
+    return SECTIONS.find(s => s.id === activeSectionId) || SECTIONS[0];
   }, [activeSectionId]);
 
   const ActiveIcon = activeSection.icon;
@@ -142,7 +146,7 @@ export const ScrollProgressBar: React.FC<ScrollProgressBarProps> = ({ darkMode }
             <div className="relative">
               <button
                 type="button"
-                onClick={() => setMenuOpen((prev) => !prev)}
+                onClick={() => setMenuOpen(prev => !prev)}
                 className={`flex items-center gap-2.5 px-3 py-1.5 rounded-full text-xs font-medium border backdrop-blur-md transition-all shadow-md cursor-pointer ${
                   darkMode
                     ? 'bg-slate-900/90 hover:bg-slate-850 border-slate-700/80 text-slate-200 hover:border-slate-600 shadow-black/40'
@@ -203,7 +207,7 @@ export const ScrollProgressBar: React.FC<ScrollProgressBarProps> = ({ darkMode }
                       <span>Jump to Section</span>
                       <span>Read Time</span>
                     </div>
-                    {SECTIONS.map((sec) => {
+                    {SECTIONS.map(sec => {
                       const Icon = sec.icon;
                       const isCurrent = sec.id === activeSectionId;
                       const secReadingTime = SECTION_READING_TIMES[sec.id];

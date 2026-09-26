@@ -1,4 +1,13 @@
+import axios from 'axios';
 import { GitHubRepoData } from '../types';
+
+export const githubClient = axios.create({
+  baseURL: 'https://api.github.com',
+  headers: {
+    Accept: 'application/vnd.github.v3+json',
+  },
+  timeout: 10000,
+});
 
 const CACHE_TTL_MS = 15 * 60 * 1000; // 15 minutes cache
 
@@ -79,7 +88,29 @@ function saveToCache<T>(key: string, data: T): void {
   }
 }
 
-function normalizeRepo(data: any): GitHubRepoData {
+interface GitHubApiRepoResponse {
+  id: number;
+  name: string;
+  full_name: string;
+  description?: string | null;
+  html_url: string;
+  homepage?: string | null;
+  stargazers_count?: number;
+  forks_count?: number;
+  open_issues_count?: number;
+  language?: string | null;
+  license?: { key?: string; spdx_id?: string; name?: string } | null;
+  topics?: string[];
+  updated_at?: string;
+  pushed_at?: string;
+  created_at?: string;
+  clone_url?: string;
+  default_branch?: string;
+  archived?: boolean;
+  fork?: boolean;
+}
+
+function normalizeRepo(data: GitHubApiRepoResponse): GitHubRepoData {
   return {
     id: data.id,
     name: data.name,
@@ -124,18 +155,8 @@ export async function fetchGitHubRepo(
   }
 
   try {
-    const res = await fetch(`https://api.github.com/repos/${owner}/${repo}`, {
-      headers: {
-        Accept: 'application/vnd.github.v3+json',
-      },
-    });
-
-    if (!res.ok) {
-      throw new Error(`GitHub API returned status ${res.status}`);
-    }
-
-    const json = await res.json();
-    const normalized = normalizeRepo(json);
+    const response = await githubClient.get<GitHubApiRepoResponse>(`/repos/${owner}/${repo}`);
+    const normalized = normalizeRepo(response.data);
     saveToCache(cacheKey, normalized);
     return normalized;
   } catch (error) {
@@ -179,26 +200,20 @@ export async function fetchUserRepos(
   }
 
   try {
-    const res = await fetch(
-      `https://api.github.com/users/${username}/repos?sort=updated&per_page=30`,
-      {
-        headers: {
-          Accept: 'application/vnd.github.v3+json',
-        },
-      }
-    );
+    const response = await githubClient.get<GitHubApiRepoResponse[]>(`/users/${username}/repos`, {
+      params: {
+        sort: 'updated',
+        per_page: 30,
+      },
+    });
 
-    if (!res.ok) {
-      throw new Error(`GitHub API returned status ${res.status}`);
-    }
-
-    const list = await res.json();
+    const list = response.data;
     if (!Array.isArray(list)) {
       throw new Error('Expected array of repos');
     }
 
     const normalizedList = list
-      .filter((item: any) => !item.fork) // prioritize original projects
+      .filter(item => !item.fork) // prioritize original projects
       .map(normalizeRepo);
 
     saveToCache(cacheKey, normalizedList);

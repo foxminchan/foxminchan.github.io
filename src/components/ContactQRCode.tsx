@@ -1,17 +1,7 @@
-import React, { useState, useEffect, useId } from 'react';
+import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
-import {
-  QrCode,
-  Download,
-  Copy,
-  Check,
-  ExternalLink,
-  Smartphone,
-  Linkedin,
-  Mail,
-  UserCheck,
-  Sparkles,
-} from 'lucide-react';
+import { QrCode, Download, Copy, Check, Smartphone, Mail, UserCheck } from 'lucide-react';
+import { Linkedin } from './BrandIcons';
 import { PERSONAL_INFO } from '../data/portfolioData';
 
 interface ContactQRCodeProps {
@@ -42,7 +32,9 @@ export const ContactQRCode: React.FC<ContactQRCodeProps> = ({ darkMode }) => {
     'END:VCARD',
   ].join('\r\n');
 
-  const getContentForMode = (mode: QRMode): { title: string; content: string; description: string } => {
+  const getContentForMode = (
+    mode: QRMode
+  ): { title: string; content: string; description: string } => {
     switch (mode) {
       case 'vcard':
         return {
@@ -84,12 +76,12 @@ export const ContactQRCode: React.FC<ContactQRCodeProps> = ({ darkMode }) => {
         light: '#ffffff',
       },
     })
-      .then((url) => {
+      .then(url => {
         if (isMounted) {
           setQrDataUrl(url);
         }
       })
-      .catch((err) => {
+      .catch(err => {
         if (isMounted) {
           setError('Failed to generate QR code');
           console.error('QR code generation error:', err);
@@ -168,7 +160,9 @@ export const ContactQRCode: React.FC<ContactQRCodeProps> = ({ darkMode }) => {
             Scan & Save Contact
           </h3>
 
-          <p className={`text-sm leading-relaxed mb-6 ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+          <p
+            className={`text-sm leading-relaxed mb-6 ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}
+          >
             Scan with your smartphone camera to quickly save my contact information or open my
             professional profiles on mobile devices.
           </p>
@@ -272,7 +266,8 @@ export const ContactQRCode: React.FC<ContactQRCodeProps> = ({ darkMode }) => {
                 }`}
               >
                 <div>
-                  <span className="text-slate-500 dark:text-slate-400">Name:</span> {PERSONAL_INFO.name}
+                  <span className="text-slate-500 dark:text-slate-400">Name:</span>{' '}
+                  {PERSONAL_INFO.name}
                 </div>
                 <div>
                   <span className="text-slate-500 dark:text-slate-400">Email:</span>{' '}

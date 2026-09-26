@@ -16,9 +16,7 @@ const renderFormattedText = (text: string, darkMode: boolean) => {
       return (
         <strong
           key={index}
-          className={`font-semibold ${
-            darkMode ? 'text-white' : 'text-slate-900'
-          }`}
+          className={`font-semibold ${darkMode ? 'text-white' : 'text-slate-900'}`}
         >
           {part.slice(2, -2)}
         </strong>

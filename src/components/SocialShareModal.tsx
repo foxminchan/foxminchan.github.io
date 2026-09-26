@@ -7,13 +7,11 @@ import {
   Copy,
   Check,
   ExternalLink,
-  Twitter,
-  Linkedin,
-  Facebook,
   Sparkles,
   Layers,
   Image as ImageIcon,
 } from 'lucide-react';
+import { Twitter, Linkedin, Facebook } from './BrandIcons';
 import { PERSONAL_INFO } from '../data/portfolioData';
 
 interface SocialShareModalProps {
@@ -39,7 +37,6 @@ export const SocialShareModal: React.FC<SocialShareModalProps> = ({
       ? window.location.origin
       : 'https://ais-pre-fiz6fotqwsv3jer6ehdytd-922523362036.asia-southeast1.run.app';
 
-  const shareTitle = `${PERSONAL_INFO.name} | Cloud • Software • AI Engineer`;
   const shareText = `Building cloud-native systems, AI agents & developer platforms with .NET – explore ${PERSONAL_INFO.name}'s portfolio & 30+ certifications:`;
 
   const handleCopyLink = async () => {
@@ -76,9 +73,7 @@ export const SocialShareModal: React.FC<SocialShareModalProps> = ({
   };
 
   const handleShareFacebook = () => {
-    const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-      currentUrl
-    )}`;
+    const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
     window.open(fbUrl, '_blank', 'noopener,noreferrer');
   };
 
@@ -121,7 +116,9 @@ export const SocialShareModal: React.FC<SocialShareModalProps> = ({
                 <Share2 className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-lg font-bold tracking-tight">Social Media OpenGraph (OG) Image</h3>
+                <h3 className="text-lg font-bold tracking-tight">
+                  Social Media OpenGraph (OG) Image
+                </h3>
                 <p className="text-xs text-slate-400 font-mono">
                   Optimized for Facebook, LinkedIn, X (Twitter), Discord &amp; Slack (1200×630px)
                 </p>
@@ -267,7 +264,8 @@ export const SocialShareModal: React.FC<SocialShareModalProps> = ({
                       </h4>
                       <p className="text-xs text-slate-400 line-clamp-2 mt-1">
                         Building cloud-native systems, AI agents, and developer platforms with .NET.
-                        Portfolio of Nhan Nguyen featuring enterprise microservices and 30+ certifications.
+                        Portfolio of Nhan Nguyen featuring enterprise microservices and 30+
+                        certifications.
                       </p>
                     </div>
                   </div>
@@ -357,7 +355,8 @@ export const SocialShareModal: React.FC<SocialShareModalProps> = ({
                         Nhan Nguyen | Cloud • Software • AI Engineer
                       </h4>
                       <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">
-                        Building cloud-native systems, AI agents &amp; developer platforms with .NET.
+                        Building cloud-native systems, AI agents &amp; developer platforms with
+                        .NET.
                       </p>
                     </div>
                   </div>
@@ -369,13 +368,16 @@ export const SocialShareModal: React.FC<SocialShareModalProps> = ({
                 <div className="max-w-xl mx-auto space-y-3">
                   <div className="rounded-r-lg border-l-4 border-l-sky-500 bg-slate-900/90 border border-slate-800 p-4 space-y-3 shadow-md">
                     <div>
-                      <span className="text-xs font-semibold text-sky-400">Nhan Nguyen Portfolio</span>
+                      <span className="text-xs font-semibold text-sky-400">
+                        Nhan Nguyen Portfolio
+                      </span>
                       <h4 className="text-sm font-bold text-white mt-0.5">
                         Nhan Nguyen | Cloud • Software • AI Engineer
                       </h4>
                       <p className="text-xs text-slate-400 mt-1">
                         Building cloud-native systems, AI agents, and developer platforms with .NET.
-                        Portfolio of Nhan Nguyen featuring enterprise microservices and 30+ certifications.
+                        Portfolio of Nhan Nguyen featuring enterprise microservices and 30+
+                        certifications.
                       </p>
                     </div>
                     <div className="rounded-lg overflow-hidden border border-slate-800 aspect-[1200/630] w-full bg-slate-950">

@@ -46,7 +46,10 @@ export function countWords(content: string): number {
  * @param content The text content or word count to analyze
  * @param wpm Reading speed in words per minute (default: 200)
  */
-export function calculateReadingTime(content: string | number, wpm = STANDARD_WPM): ReadingTimeResult {
+export function calculateReadingTime(
+  content: string | number,
+  wpm = STANDARD_WPM
+): ReadingTimeResult {
   const words = typeof content === 'number' ? content : countWords(content);
 
   if (words <= 0) {
@@ -126,12 +129,7 @@ export function getProjectsSectionWords(): number {
   const chunks: string[] = [];
 
   PROJECTS.forEach(proj => {
-    chunks.push(
-      proj.title,
-      proj.description,
-      proj.featuredBadge || '',
-      ...proj.highlights
-    );
+    chunks.push(proj.title, proj.description, proj.featuredBadge || '', ...proj.highlights);
   });
 
   return countWords(chunks.join(' '));
@@ -222,10 +220,7 @@ export const SECTION_READING_TIMES: Record<string, SectionReadingTime> = {
  * Calculates the cumulative reading time across all content sections on the page.
  */
 export function getTotalPortfolioReadingTime(): ReadingTimeResult {
-  const totalWords = Object.values(SECTION_READING_TIMES).reduce(
-    (acc, sec) => acc + sec.words,
-    0
-  );
+  const totalWords = Object.values(SECTION_READING_TIMES).reduce((acc, sec) => acc + sec.words, 0);
 
   return calculateReadingTime(totalWords);
 }
