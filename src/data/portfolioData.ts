@@ -25,6 +25,20 @@ export const PERSONAL_INFO = {
 
 export const CERTIFICATIONS: Certification[] = [
   {
+    id: 38,
+    title: 'Microsoft Certified: Azure AI Cloud Developer Associate',
+    issuer: 'Microsoft',
+    issued: 'Sep 2026',
+    issueDate: '2026-09-28',
+    expires: 'Sep 2027',
+    credentialId: '9948E37F51274BE2',
+    credentialUrl:
+      'https://learn.microsoft.com/api/credentials/share/en-us/FoxMinChan/9948E37F51274BE2?sharingId',
+    level: 'Associate',
+    featured: true,
+    badgeImage: '/badges/ms-associate.svg',
+  },
+  {
     id: 37,
     title: 'Oracle Cloud Infrastructure Certified AI Foundations Associate',
     issuer: 'Oracle',
