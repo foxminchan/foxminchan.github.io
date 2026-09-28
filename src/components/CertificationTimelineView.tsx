@@ -87,7 +87,7 @@ export const CertificationTimelineView: React.FC<CertificationTimelineViewProps>
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const issuersList = ['All', 'Microsoft', 'Oracle', 'Google', 'Atlassian', 'Asana', 'IBM', 'New Relic'];
+  const issuersList = ['All', 'Microsoft', 'Oracle', 'Google', 'Atlassian', 'Asana', 'IBM', 'New Relic', 'Dynatrace'];
 
   return (
     <div className="space-y-10">

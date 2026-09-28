@@ -274,6 +274,15 @@ export function getIssuerStyle(issuer: string): IssuerStyle {
       badgeTextColor: '#34d399',
     };
   }
+  if (norm.includes('dynatrace')) {
+    return {
+      name: 'Dynatrace',
+      color: '#1496FF',
+      bgColor: 'rgba(20, 150, 255, 0.12)',
+      borderColor: 'rgba(20, 150, 255, 0.35)',
+      badgeTextColor: '#38bdf8',
+    };
+  }
   if (norm.includes('hashicorp')) {
     return {
       name: 'HashiCorp',

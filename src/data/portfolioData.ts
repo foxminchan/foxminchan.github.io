@@ -25,6 +25,20 @@ export const PERSONAL_INFO = {
 
 export const CERTIFICATIONS: Certification[] = [
   {
+    id: 39,
+    title: 'Dynatrace Essentials',
+    issuer: 'Dynatrace',
+    issued: 'Sep 2026',
+    issueDate: '2026-09-28',
+    expires: 'Sep 2028',
+    credentialId: '7e11376e-68a5-4195-a540-26429ffe0ade',
+    credentialUrl:
+      'https://www.credly.com/badges/7e11376e-68a5-4195-a540-26429ffe0ade/linked_in_profile',
+    level: 'Foundations',
+    featured: true,
+    badgeImage: '/badges/dynatrace-essentials.png',
+  },
+  {
     id: 38,
     title: 'Microsoft Certified: Azure AI Cloud Developer Associate',
     issuer: 'Microsoft',

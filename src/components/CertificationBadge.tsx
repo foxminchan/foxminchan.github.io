@@ -114,6 +114,17 @@ const getIssuerTheme = (issuer: string, level?: CertLevel): IssuerTheme => {
     };
   }
 
+  if (normalized.includes('dynatrace')) {
+    return {
+      primary: '#1496FF',
+      glowColor: 'rgba(20, 150, 255, 0.35)',
+      ringColor: 'border-cyan-400/40',
+      bgTint: 'from-cyan-500/20 via-blue-500/10 to-purple-500/10',
+      darkGlow: 'rgba(20, 150, 255, 0.22)',
+      lightGlow: 'rgba(20, 150, 255, 0.14)',
+    };
+  }
+
   if (normalized.includes('hashicorp')) {
     return {
       primary: '#E535AB',
@@ -274,6 +285,14 @@ const FallbackBadgeEmblem: React.FC<{
           <circle cx="25" cy="12" r="7" fill="#F06A6A" />
           <circle cx="12" cy="28" r="7" fill="#F06A6A" />
           <circle cx="38" cy="28" r="7" fill="#F06A6A" />
+        </g>
+      ) : norm.includes('dynatrace') ? (
+        <g transform="translate(62, 50)">
+          {/* Dynatrace badge icon motif */}
+          <rect x="0" y="0" width="16" height="16" rx="3" fill="#80B600" />
+          <rect x="18" y="0" width="16" height="16" rx="3" fill="#1496FF" />
+          <rect x="0" y="18" width="16" height="16" rx="3" fill="#6A1B9A" />
+          <rect x="18" y="18" width="16" height="16" rx="3" fill="#1E293B" />
         </g>
       ) : (
         <g transform="translate(60, 50)">
