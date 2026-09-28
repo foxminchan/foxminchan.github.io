@@ -1,6 +1,7 @@
 import {
   PERSONAL_INFO,
   EXPERIENCES,
+  EDUCATION,
   PROJECTS,
   SKILL_GROUPS,
   CERTIFICATIONS,
@@ -123,6 +124,38 @@ export function getExperienceSectionWords(): number {
 }
 
 /**
+ * Calculates the total word count for the Education & Honors section.
+ */
+export function getEducationSectionWords(): number {
+  const chunks: string[] = [];
+
+  EDUCATION.forEach(edu => {
+    chunks.push(
+      edu.institution,
+      edu.degree,
+      edu.fieldOfStudy,
+      edu.period,
+      edu.grade,
+      edu.location,
+      ...(edu.highlights || [])
+    );
+    edu.honors.forEach(honor => {
+      chunks.push(
+        honor.title,
+        honor.issuer,
+        honor.date,
+        honor.associatedWith,
+        honor.description,
+        honor.category || '',
+        honor.highlightBadge || ''
+      );
+    });
+  });
+
+  return countWords(chunks.join(' '));
+}
+
+/**
  * Calculates the total word count for the Featured Projects section.
  */
 export function getProjectsSectionWords(): number {
@@ -193,6 +226,11 @@ export const SECTION_READING_TIMES: Record<string, SectionReadingTime> = {
     id: 'experience',
     label: 'Experience',
     ...calculateReadingTime(getExperienceSectionWords()),
+  },
+  education: {
+    id: 'education',
+    label: 'Education',
+    ...calculateReadingTime(getEducationSectionWords()),
   },
   projects: {
     id: 'projects',

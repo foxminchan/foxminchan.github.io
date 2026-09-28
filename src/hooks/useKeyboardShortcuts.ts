@@ -117,7 +117,7 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers, enabled: boolea
           break;
         }
 
-        // Section Jump: '1' or 'a' -> About
+        // Section Jump: '1' -> About
         case '1': {
           e.preventDefault();
           onNavigateSection?.('about', 'About');
@@ -125,7 +125,7 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers, enabled: boolea
           break;
         }
 
-        // Section Jump: '2' or 'e' -> Experience
+        // Section Jump: '2' -> Experience
         case '2': {
           e.preventDefault();
           onNavigateSection?.('experience', 'Experience');
@@ -133,35 +133,43 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers, enabled: boolea
           break;
         }
 
-        // Section Jump: '3' or 'p' -> Projects
+        // Section Jump: '3' -> Education
         case '3': {
           e.preventDefault();
-          onNavigateSection?.('projects', 'Projects');
-          showToast?.('Jumped to Projects', '3');
+          onNavigateSection?.('education', 'Education');
+          showToast?.('Jumped to Education', '3');
           break;
         }
 
-        // Section Jump: '4' or 'k' -> Skills
+        // Section Jump: '4' -> Projects
         case '4': {
           e.preventDefault();
-          onNavigateSection?.('skills', 'Skills');
-          showToast?.('Jumped to Skills', '4');
+          onNavigateSection?.('projects', 'Projects');
+          showToast?.('Jumped to Projects', '4');
           break;
         }
 
-        // Section Jump: '5' or 'c' -> Certifications
+        // Section Jump: '5' -> Skills
         case '5': {
           e.preventDefault();
-          onNavigateSection?.('certifications', 'Certifications');
-          showToast?.('Jumped to Certifications', '5');
+          onNavigateSection?.('skills', 'Skills');
+          showToast?.('Jumped to Skills', '5');
           break;
         }
 
-        // Section Jump: '6' or 'm' -> Contact
+        // Section Jump: '6' -> Certifications
         case '6': {
           e.preventDefault();
+          onNavigateSection?.('certifications', 'Certifications');
+          showToast?.('Jumped to Certifications', '6');
+          break;
+        }
+
+        // Section Jump: '7' -> Contact
+        case '7': {
+          e.preventDefault();
           onNavigateSection?.('contact', 'Contact');
-          showToast?.('Jumped to Contact', '6');
+          showToast?.('Jumped to Contact', '7');
           break;
         }
 

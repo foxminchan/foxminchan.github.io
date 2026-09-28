@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { motion } from 'motion/react';
+import { motion, Variants } from 'motion/react';
 import {
   Award,
   Search,
@@ -17,10 +17,15 @@ import {
   RotateCcw,
   Building2,
   GraduationCap,
+  Calendar,
+  LayoutGrid,
+  Download,
 } from 'lucide-react';
 import { CERTIFICATIONS } from '../data/portfolioData';
 import { Certification } from '../types';
-import { LazyBadge } from './LazyBadge';
+import { CertificationBadge } from './CertificationBadge';
+import { CertificationTimelineView } from './CertificationTimelineView';
+import { CertificationExportModal } from './CertificationExportModal';
 import { SECTION_READING_TIMES } from '../utils/readingTime';
 import { ReadingTimeBadge } from './ReadingTimeBadge';
 
@@ -41,7 +46,37 @@ interface LevelTab {
   count: number;
 }
 
+const certGridVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const certCardVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 28,
+    scale: 0.96,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.45,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
 export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ darkMode }) => {
+  const [viewMode, setViewMode] = useState<'grid' | 'timeline'>('grid');
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState<string>('All');
   const [selectedIssuer, setSelectedIssuer] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -291,33 +326,102 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
             </p>
           </div>
 
-          {/* Search bar */}
-          <div className="relative w-full md:w-80">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <input
-              type="text"
-              id="cert-search-input"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search title, ID, or issuer..."
-              className={`w-full pl-10 pr-4 py-2 text-sm rounded-lg border outline-none transition-all ${
-                darkMode
-                  ? 'bg-slate-900 border-slate-700 text-slate-100 placeholder-slate-500 focus:border-sky-500 focus:ring-1 focus:ring-sky-500'
-                  : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-sky-600 focus:ring-1 focus:ring-sky-600 shadow-xs'
+          {/* Controls: Search Bar, View Mode Switcher, and Download Image Button */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+            {/* Search bar */}
+            <div className="relative w-full sm:w-64 md:w-72">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input
+                type="text"
+                id="cert-search-input"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search title, ID, issuer..."
+                className={`w-full pl-10 pr-4 py-2 text-sm rounded-xl border outline-none transition-all ${
+                  darkMode
+                    ? 'bg-slate-900 border-slate-700 text-slate-100 placeholder-slate-500 focus:border-sky-500 focus:ring-1 focus:ring-sky-500'
+                    : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-sky-600 focus:ring-1 focus:ring-sky-600 shadow-xs'
+                }`}
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-200 cursor-pointer"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+
+            {/* View Mode Switcher (Grid vs. Timeline) */}
+            <div
+              className={`p-1 rounded-xl border flex items-center gap-1 ${
+                darkMode ? 'bg-slate-900 border-slate-700' : 'bg-white border-slate-300 shadow-2xs'
               }`}
-            />
-            {searchQuery && (
+            >
               <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-200 cursor-pointer"
+                type="button"
+                onClick={() => setViewMode('grid')}
+                id="cert-view-grid-btn"
+                title="Grid View"
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  viewMode === 'grid'
+                    ? darkMode
+                      ? 'bg-sky-500 text-white shadow-xs'
+                      : 'bg-slate-900 text-white shadow-xs'
+                    : darkMode
+                      ? 'text-slate-400 hover:text-slate-200'
+                      : 'text-slate-600 hover:text-slate-900'
+                }`}
               >
-                Clear
+                <LayoutGrid className="w-3.5 h-3.5" />
+                <span>Grid</span>
               </button>
-            )}
+              <button
+                type="button"
+                onClick={() => setViewMode('timeline')}
+                id="cert-view-timeline-btn"
+                title="Timeline Journey"
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  viewMode === 'timeline'
+                    ? darkMode
+                      ? 'bg-sky-500 text-white shadow-xs'
+                      : 'bg-slate-900 text-white shadow-xs'
+                    : darkMode
+                      ? 'text-slate-400 hover:text-slate-200'
+                      : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <Calendar className="w-3.5 h-3.5" />
+                <span>Timeline</span>
+              </button>
+            </div>
+
+            {/* Download Timeline Image Button */}
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setIsExportModalOpen(true)}
+              id="cert-export-image-btn"
+              className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-sky-600 via-indigo-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 transition-all shadow-md shadow-sky-600/25 shrink-0 cursor-pointer"
+              title="Download Certification Timeline Showcase Image"
+            >
+              <Download className="w-4 h-4" />
+              <span>Export Image</span>
+            </motion.button>
           </div>
         </motion.div>
 
-        {/* Credential Level Stats Strip (Interactive quick filter) */}
+        {viewMode === 'timeline' ? (
+          <CertificationTimelineView
+            certifications={filteredCerts}
+            darkMode={darkMode}
+            onSelectCert={setPreviewCert}
+            onOpenExportModal={() => setIsExportModalOpen(true)}
+          />
+        ) : (
+          <>
+            {/* Credential Level Stats Strip (Interactive quick filter) */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
           <button
             type="button"
@@ -667,9 +771,14 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
           )}
         </div>
 
-        {/* Certifications Grid: Clean Digital Badge Cards matching Credly specification */}
+        {/* Certifications Grid: Clean Digital Badge Cards with Stagger In-View Animation */}
         <motion.div
+          key={`${selectedLevel}-${selectedIssuer}-${searchQuery}-${isExpanded}`}
           layout
+          variants={certGridVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.08 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7"
         >
           {displayedCerts.map(cert => {
@@ -679,10 +788,8 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
             return (
               <motion.div
                 layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3 }}
+                variants={certCardVariants}
+                exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
                 key={cert.id}
                 id={`cert-card-${cert.id}`}
                 onClick={() => setPreviewCert(cert)}
@@ -732,13 +839,14 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
                 )}
                 {/* Centered Badge Artwork */}
                 <div className="flex items-center justify-center py-6 mb-6">
-                  <LazyBadge
+                  <CertificationBadge
                     src={cert.badgeImage}
-                    alt={`${cert.title} Badge`}
+                    title={cert.title}
+                    issuer={cert.issuer}
+                    level={cert.level}
+                    featured={cert.featured}
                     darkMode={darkMode}
-                    width={144}
-                    height={144}
-                    className="w-36 h-36 max-w-[150px] max-h-[150px] object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow-xs"
+                    size="md"
                   />
                 </div>
 
@@ -861,6 +969,8 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
             </button>
           </div>
         )}
+          </>
+        )}
 
         {/* Credential Details Modal (Reveals ID and Archived Date on click) */}
         {previewCert &&
@@ -898,14 +1008,16 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
 
                   {/* Modal Badge Image */}
                   <div className="flex flex-col items-center text-center pt-2 pb-2">
-                    <div className="w-36 h-36 flex items-center justify-center mb-4">
-                      <LazyBadge
+                    <div className="flex items-center justify-center mb-4">
+                      <CertificationBadge
                         src={previewCert.badgeImage}
-                        alt={previewCert.title}
+                        title={previewCert.title}
+                        issuer={previewCert.issuer}
+                        level={previewCert.level}
+                        featured={previewCert.featured}
                         darkMode={darkMode}
-                        width={144}
-                        height={144}
-                        className="max-h-full max-w-full object-contain filter drop-shadow-md"
+                        size="modal"
+                        priority={true}
                       />
                     </div>
 
@@ -1045,6 +1157,14 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
               </div>
             );
           })()}
+
+        {/* Certification Timeline Image Export Modal */}
+        <CertificationExportModal
+          isOpen={isExportModalOpen}
+          onClose={() => setIsExportModalOpen(false)}
+          certifications={CERTIFICATIONS}
+          darkMode={darkMode}
+        />
       </div>
     </section>
   );

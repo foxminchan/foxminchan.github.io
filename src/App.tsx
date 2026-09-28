@@ -8,6 +8,7 @@ import { PROJECTS } from './data/portfolioData';
 import { CertificationsSection } from './components/CertificationsSection';
 import { ProjectsSection } from './components/ProjectsSection';
 import { ExperienceSection } from './components/ExperienceSection';
+import { EducationSection } from './components/EducationSection';
 import { SkillsSection } from './components/SkillsSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
@@ -104,6 +105,7 @@ export default function App() {
       <main id="main-content">
         <Hero darkMode={darkMode} totalStars={totalStars} />
         <ExperienceSection darkMode={darkMode} />
+        <EducationSection darkMode={darkMode} />
         <ProjectsSection
           darkMode={darkMode}
           featuredData={featuredData}

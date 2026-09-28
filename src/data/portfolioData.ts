@@ -1,4 +1,4 @@
-import { Certification, ExperienceRole, Project, SkillGroup } from '../types';
+import { Certification, EducationItem, ExperienceRole, Project, SkillGroup } from '../types';
 
 export const PERSONAL_INFO = {
   name: 'Nhan Nguyen',
@@ -683,6 +683,73 @@ export const SKILL_GROUPS: SkillGroup[] = [
       { name: 'RAG & Vector Embeddings', highlight: true },
       { name: 'Redis Caching' },
       { name: 'Azure AI Apps & Agents' },
+    ],
+  },
+];
+
+export const EDUCATION: EducationItem[] = [
+  {
+    id: 'hutech',
+    institution: 'HUTECH - Ho Chi Minh City University of Technology',
+    institutionShort: 'HUTECH',
+    degree: 'Bachelor of Engineering - BE',
+    fieldOfStudy: 'Information Technology',
+    period: 'Sep 2020 – Sep 2024',
+    startDate: 'Sep 2020',
+    endDate: 'Sep 2024',
+    grade: '3.7',
+    location: 'Ho Chi Minh City, Vietnam',
+    status: 'Graduated',
+    highlights: [
+      'Graduated with an outstanding academic GPA of 3.7 / 4.0.',
+      'Active competitive programmer representing HUTECH at multiple national and regional informatics contests.',
+      'Specialized in Software Engineering, Computer Networks, Distributed Architecture, and Cloud Systems.',
+    ],
+    honors: [
+      {
+        id: 'olp-32',
+        title: 'Consolation Prizes - 32nd Vietnam Student Olympiad in Informatics',
+        issuer: 'Vietnam Free & Open Source Software Association',
+        date: 'Dec 2023',
+        associatedWith: 'HCM University Of Technology (HUTECH)',
+        description:
+          'Awarded for demonstrated skills in open-source software and informatics at the national-level Vietnam Student Olympiad in Informatics.',
+        category: 'National Olympiad',
+        highlightBadge: 'National Finalist',
+      },
+      {
+        id: 'code-your-future-2023',
+        title: 'Third Prizes - Code Your Future 2023',
+        issuer: 'CJ OliveNetworks Vina',
+        date: 'Sep 2023',
+        associatedWith: 'HCM University Of Technology (HUTECH)',
+        description:
+          'Awarded for excellence in software development and innovation, achieving third place in a competitive field. This prize highlights strong technical skills, problem-solving abilities, and effective teamwork.',
+        category: 'Innovation & Hackathon',
+        highlightBadge: '3rd Place',
+      },
+      {
+        id: 'apjc-netacad-2023',
+        title: 'Third Prizes - APJC NetAcad Riders 2023',
+        issuer: 'Cisco Networking Academy',
+        date: 'May 2023',
+        associatedWith: 'HCM University Of Technology (HUTECH)',
+        description:
+          'Achieved third place in a regional competition, showcasing advanced networking skills and expertise in Cisco technologies.',
+        category: 'Networking Competition',
+        highlightBadge: 'Regional 3rd Place',
+      },
+      {
+        id: 'olp-31',
+        title: 'Consolation Prizes - 31st Vietnam Student Olympiad in Informatics',
+        issuer: 'Vietnam Free & Open Source Software Association',
+        date: 'Dec 2022',
+        associatedWith: 'HCM University Of Technology (HUTECH)',
+        description:
+          'Recognized for strong performance in the 31st Vietnam Student Olympiad in Informatics, demonstrating proficiency in problem-solving and open-source software development.',
+        category: 'National Olympiad',
+        highlightBadge: 'National Finalist',
+      },
     ],
   },
 ];

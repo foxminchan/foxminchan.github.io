@@ -79,3 +79,30 @@ export interface SkillGroup {
     highlight?: boolean;
   }[];
 }
+
+export interface HonorAward {
+  id: string;
+  title: string;
+  issuer: string;
+  date: string;
+  associatedWith: string;
+  description: string;
+  category?: 'National Olympiad' | 'Innovation & Hackathon' | 'Networking Competition';
+  highlightBadge?: string;
+}
+
+export interface EducationItem {
+  id: string;
+  institution: string;
+  institutionShort?: string;
+  degree: string;
+  fieldOfStudy: string;
+  period: string;
+  startDate: string;
+  endDate: string;
+  grade: string;
+  location: string;
+  status?: string;
+  highlights?: string[];
+  honors: HonorAward[];
+}

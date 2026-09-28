@@ -4,6 +4,7 @@ import {
   Terminal,
   Award,
   Briefcase,
+  GraduationCap,
   FolderGit2,
   Cpu,
   Mail,
@@ -55,6 +56,13 @@ export const Navbar: React.FC<NavbarProps> = ({
       href: '#experience',
       icon: Briefcase,
       readTime: SECTION_READING_TIMES.experience?.text || '2 min read',
+    },
+    {
+      id: 'education',
+      label: 'Education',
+      href: '#education',
+      icon: GraduationCap,
+      readTime: SECTION_READING_TIMES.education?.text || '1 min read',
     },
     {
       id: 'projects',
