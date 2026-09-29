@@ -68,15 +68,23 @@ export const CertificationExportModal: React.FC<CertificationExportModalProps> =
     }
   }, [isOpen, generateCanvas]);
 
-  // Handle ESC key
+  // Handle ESC key and body scroll lock
   useEffect(() => {
+    if (!isOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
         onClose();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
@@ -112,8 +120,18 @@ export const CertificationExportModal: React.FC<CertificationExportModalProps> =
   return (
     <div
       ref={modalRef}
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/80 backdrop-blur-md"
-      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/80 backdrop-blur-md overscroll-contain"
+      onClick={e => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+      onTouchEnd={e => {
+        if (e.target === e.currentTarget) {
+          e.preventDefault();
+          onClose();
+        }
+      }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="export-modal-title"
@@ -153,10 +171,11 @@ export const CertificationExportModal: React.FC<CertificationExportModalProps> =
 
           <button
             onClick={onClose}
-            className={`p-2 rounded-xl text-slate-400 hover:text-slate-200 transition-colors cursor-pointer ${
-              darkMode ? 'hover:bg-slate-800' : 'hover:bg-slate-100'
+            className={`w-10 h-10 flex items-center justify-center rounded-xl text-slate-400 hover:text-slate-200 active:scale-95 transition-all cursor-pointer ${
+              darkMode ? 'hover:bg-slate-800 active:bg-slate-700' : 'hover:bg-slate-100 active:bg-slate-200'
             }`}
             title="Close modal"
+            aria-label="Close modal"
           >
             <X className="w-5 h-5" />
           </button>

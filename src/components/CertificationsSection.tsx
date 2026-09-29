@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { motion, Variants } from 'motion/react';
+import { motion, AnimatePresence, Variants } from 'motion/react';
 import {
   Award,
   Search,
@@ -47,12 +47,12 @@ interface LevelTab {
 }
 
 const certGridVariants: Variants = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 1 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.05,
+      staggerChildren: 0.04,
+      delayChildren: 0.02,
     },
   },
 };
@@ -60,15 +60,15 @@ const certGridVariants: Variants = {
 const certCardVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 28,
-    scale: 0.96,
+    y: 20,
+    scale: 0.98,
   },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     transition: {
-      duration: 0.45,
+      duration: 0.35,
       ease: [0.22, 1, 0.36, 1],
     },
   },
@@ -83,7 +83,49 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [previewCert, setPreviewCert] = useState<Certification | null>(null);
   const modalRef = useRef<HTMLDivElement | null>(null);
+  const modalScrollRef = useRef<HTMLDivElement | null>(null);
   const previouslyFocusedElement = useRef<HTMLElement | null>(null);
+
+  // Touch drag state for mobile pull-down dismissal
+  const [modalDragY, setModalDragY] = useState(0);
+  const [isModalDragging, setIsModalDragging] = useState(false);
+  const touchStartY = useRef(0);
+
+  const closeModal = () => {
+    setPreviewCert(null);
+    setModalDragY(0);
+    setIsModalDragging(false);
+  };
+
+  const handleModalTouchStart = (e: React.TouchEvent) => {
+    // Only allow drag-to-dismiss when modal is scrolled near the top
+    if (modalScrollRef.current && modalScrollRef.current.scrollTop > 5) {
+      return;
+    }
+    touchStartY.current = e.touches[0].clientY;
+    setIsModalDragging(true);
+  };
+
+  const handleModalTouchMove = (e: React.TouchEvent) => {
+    if (!isModalDragging) return;
+    const currentY = e.touches[0].clientY;
+    const diff = currentY - touchStartY.current;
+    if (diff > 0) {
+      setModalDragY(diff);
+    } else {
+      setModalDragY(0);
+    }
+  };
+
+  const handleModalTouchEnd = () => {
+    if (!isModalDragging) return;
+    setIsModalDragging(false);
+    if (modalDragY > 80) {
+      closeModal();
+    } else {
+      setModalDragY(0);
+    }
+  };
 
   useEffect(() => {
     if (!previewCert) return;
@@ -91,14 +133,18 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
     previouslyFocusedElement.current = document.activeElement as HTMLElement;
     modalRef.current?.focus();
 
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setPreviewCert(null);
+        closeModal();
       }
     };
 
     document.addEventListener('keydown', handleKeyDown);
     return () => {
+      document.body.style.overflow = originalOverflow;
       document.removeEventListener('keydown', handleKeyDown);
       previouslyFocusedElement.current?.focus();
     };
@@ -206,6 +252,11 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
 
   // Collapse to 2 rows (6 cards in 3-column desktop layout) by default
   const [isExpanded, setIsExpanded] = useState(false);
+
+  // Reset expand state when filters change
+  useEffect(() => {
+    setIsExpanded(false);
+  }, [selectedLevel, selectedIssuer, searchQuery]);
 
   const displayedCerts = useMemo(() => {
     if (isExpanded) return filteredCerts;
@@ -775,12 +826,12 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
 
         {/* Certifications Grid: Clean Digital Badge Cards with Stagger In-View Animation */}
         <motion.div
-          key={`${selectedLevel}-${selectedIssuer}-${searchQuery}-${isExpanded}`}
-          layout
+          key={`${selectedLevel}-${selectedIssuer}-${searchQuery}`}
           variants={certGridVariants}
-          initial="hidden"
+          initial={isExpanded ? 'visible' : 'hidden'}
           whileInView="visible"
-          viewport={{ once: true, amount: 0.08 }}
+          animate={isExpanded ? 'visible' : undefined}
+          viewport={{ once: true, amount: 'some' }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7"
         >
           {displayedCerts.map(cert => {
@@ -789,9 +840,7 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
             const isNew = isArchivedWithinPastWeek(cert);
             return (
               <motion.div
-                layout
                 variants={certCardVariants}
-                exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
                 key={cert.id}
                 id={`cert-card-${cert.id}`}
                 onClick={() => setPreviewCert(cert)}
@@ -975,190 +1024,241 @@ export const CertificationsSection: React.FC<CertificationsSectionProps> = ({ da
         )}
 
         {/* Credential Details Modal (Reveals ID and Archived Date on click) */}
-        {previewCert &&
-          (() => {
-            const modalHasExpiry = hasExpiryDate(previewCert.expires);
-            const modalExpired = isExpired(previewCert.expires);
-            const modalIsNew = isArchivedWithinPastWeek(previewCert);
-            return (
-              <div
-                ref={modalRef}
-                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-xs"
-                onClick={() => setPreviewCert(null)}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby="certification-modal-title"
-                tabIndex={-1}
-              >
-                <div
-                  className={`relative max-w-md w-full rounded-3xl p-6 sm:p-8 border shadow-2xl transition-all ${
-                    darkMode
-                      ? 'bg-slate-900 border-slate-700 text-slate-100'
-                      : 'bg-white border-slate-200 text-slate-900'
-                  }`}
-                  onClick={e => e.stopPropagation()}
+        <AnimatePresence>
+          {previewCert &&
+            (() => {
+              const modalHasExpiry = hasExpiryDate(previewCert.expires);
+              const modalExpired = isExpired(previewCert.expires);
+              const modalIsNew = isArchivedWithinPastWeek(previewCert);
+              return (
+                <motion.div
+                  ref={modalRef}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/75 backdrop-blur-xs overscroll-contain"
+                  onClick={e => {
+                    if (e.target === e.currentTarget) {
+                      closeModal();
+                    }
+                  }}
+                  onTouchEnd={e => {
+                    if (e.target === e.currentTarget) {
+                      e.preventDefault();
+                      closeModal();
+                    }
+                  }}
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="certification-modal-title"
+                  tabIndex={-1}
                 >
-                  <button
-                    onClick={() => setPreviewCert(null)}
-                    className={`absolute top-5 right-5 p-1.5 rounded-full text-slate-400 hover:text-slate-200 transition-colors cursor-pointer ${
-                      darkMode ? 'hover:bg-slate-800' : 'hover:bg-slate-100'
-                    }`}
-                    title="Close modal"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
+                  {/* Backdrop Touch Dismiss Area (Above the mobile sheet) */}
+                  <div
+                    className="sm:hidden absolute top-0 left-0 right-0 h-24 z-0 cursor-pointer"
+                    onClick={closeModal}
+                    aria-label="Tap backdrop to dismiss"
+                  />
 
-                  {/* Modal Badge Image */}
-                  <div className="flex flex-col items-center text-center pt-2 pb-2">
-                    <div className="flex items-center justify-center mb-4">
-                      <CertificationBadge
-                        src={previewCert.badgeImage}
-                        title={previewCert.title}
-                        issuer={previewCert.issuer}
-                        level={previewCert.level}
-                        featured={previewCert.featured}
-                        darkMode={darkMode}
-                        size="modal"
-                        priority={true}
-                      />
+                  <motion.div
+                    ref={modalScrollRef}
+                    initial={{ y: '100%', opacity: 0.8 }}
+                    animate={{
+                      y: modalDragY > 0 ? modalDragY : 0,
+                      opacity: 1,
+                    }}
+                    exit={{ y: '100%', opacity: 0 }}
+                    transition={
+                      isModalDragging
+                        ? { duration: 0 }
+                        : { type: 'spring', damping: 28, stiffness: 320 }
+                    }
+                    className={`relative max-w-md w-full rounded-t-3xl sm:rounded-3xl p-6 sm:p-8 border shadow-2xl transition-colors max-h-[92vh] sm:max-h-[85vh] overflow-y-auto overscroll-contain z-10 ${
+                      darkMode
+                        ? 'bg-slate-900 border-slate-700 text-slate-100'
+                        : 'bg-white border-slate-200 text-slate-900'
+                    }`}
+                    onClick={e => e.stopPropagation()}
+                    onTouchStart={handleModalTouchStart}
+                    onTouchMove={handleModalTouchMove}
+                    onTouchEnd={handleModalTouchEnd}
+                  >
+                    {/* Mobile Touch Drag Handle & Dismiss Area */}
+                    <div
+                      className="sm:hidden -mt-2 mb-3.5 flex flex-col items-center justify-center cursor-grab active:cursor-grabbing touch-none select-none py-1 group"
+                      onClick={closeModal}
+                    >
+                      <div className="w-12 h-1.5 rounded-full bg-slate-400/50 dark:bg-slate-600/70 group-hover:bg-slate-400 transition-colors" />
+                      <span className="text-[10px] text-slate-400 mt-1 font-medium tracking-wide">
+                        Swipe down or tap backdrop to close
+                      </span>
                     </div>
 
-                    <h3
-                      id="certification-modal-title"
-                      className={`text-xl font-bold leading-snug px-2 ${
-                        darkMode ? 'text-white' : 'text-slate-900'
+                    {/* Touch-Friendly Close Button with min 44x44px Hit Target */}
+                    <button
+                      onClick={closeModal}
+                      className={`absolute top-4 right-4 sm:top-5 sm:right-5 w-11 h-11 flex items-center justify-center rounded-full text-slate-400 hover:text-slate-200 active:scale-95 transition-all cursor-pointer z-20 ${
+                        darkMode ? 'hover:bg-slate-800 active:bg-slate-700' : 'hover:bg-slate-100 active:bg-slate-200'
                       }`}
+                      aria-label="Close modal"
+                      title="Close modal"
                     >
-                      {previewCert.title}
-                    </h3>
-                    <div className="flex items-center gap-2 mt-1.5 justify-center">
-                      <p
-                        className={`text-sm font-medium ${
-                          darkMode ? 'text-slate-400' : 'text-slate-600'
+                      <X className="w-5 h-5" />
+                    </button>
+
+                    {/* Modal Badge Image */}
+                    <div className="flex flex-col items-center text-center pt-1 pb-2">
+                      <div className="flex items-center justify-center mb-4">
+                        <CertificationBadge
+                          src={previewCert.badgeImage}
+                          title={previewCert.title}
+                          issuer={previewCert.issuer}
+                          level={previewCert.level}
+                          featured={previewCert.featured}
+                          darkMode={darkMode}
+                          size="modal"
+                          priority={true}
+                        />
+                      </div>
+
+                      <h3
+                        id="certification-modal-title"
+                        className={`text-xl font-bold leading-snug px-2 ${
+                          darkMode ? 'text-white' : 'text-slate-900'
                         }`}
                       >
-                        {previewCert.issuer}
-                      </p>
-                      {modalIsNew && (
-                        <span
-                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase ${
-                            darkMode
-                              ? 'bg-emerald-950/90 text-emerald-400 border border-emerald-500/40'
-                              : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                        {previewCert.title}
+                      </h3>
+                      <div className="flex items-center gap-2 mt-1.5 justify-center">
+                        <p
+                          className={`text-sm font-medium ${
+                            darkMode ? 'text-slate-400' : 'text-slate-600'
                           }`}
                         >
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                          New
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Details Box: ID & Archived Date */}
-                  <div
-                    className={`p-4 rounded-2xl text-sm space-y-3 my-5 ${
-                      darkMode
-                        ? 'bg-slate-950/80 border border-slate-800'
-                        : 'bg-slate-50 border border-slate-200'
-                    }`}
-                  >
-                    {/* Archived Date */}
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-400 font-medium">Archived Date:</span>
-                      <div className="flex items-center gap-2">
-                        <span
-                          className={`font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}
-                        >
-                          {previewCert.issued}
-                        </span>
+                          {previewCert.issuer}
+                        </p>
                         {modalIsNew && (
                           <span
-                            className={`px-1.5 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-wide ${
+                            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase ${
                               darkMode
-                                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                                : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                                ? 'bg-emerald-950/90 text-emerald-400 border border-emerald-500/40'
+                                : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                             }`}
                           >
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                             New
                           </span>
                         )}
                       </div>
                     </div>
 
-                    {/* Expiration Date - ONLY show if certificate has an expiration date */}
-                    {modalHasExpiry && (
-                      <div className="flex items-center justify-between">
-                        <span className="text-slate-400 font-medium">Expiration Date:</span>
-                        <span
-                          className={
-                            modalExpired
-                              ? 'text-red-500 font-semibold'
-                              : 'text-emerald-500 font-semibold'
-                          }
-                        >
-                          {modalExpired ? `Expired ${previewCert.expires}` : previewCert.expires}
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Credential ID with Copy Button */}
-                    <div className="pt-2.5 border-t border-slate-800/60 flex items-center justify-between gap-2">
-                      <span className="text-slate-400 font-medium shrink-0">Credential ID:</span>
-                      <div className="flex items-center gap-1.5 min-w-0">
-                        <span
-                          className="font-mono text-xs truncate text-sky-400 font-semibold"
-                          title={previewCert.credentialId}
-                        >
-                          {previewCert.credentialId}
-                        </span>
-                        <button
-                          onClick={() => handleCopy(previewCert.credentialId)}
-                          className={`p-1.5 rounded-lg cursor-pointer transition-colors shrink-0 ${
-                            darkMode
-                              ? 'hover:bg-slate-800 text-slate-300'
-                              : 'hover:bg-slate-200 text-slate-700'
-                          }`}
-                          title="Copy Credential ID"
-                        >
-                          {copiedId === previewCert.credentialId ? (
-                            <span className="flex items-center gap-1 text-emerald-500 text-xs font-semibold">
-                              <Check className="w-3.5 h-3.5" />
-                              <span>Copied</span>
-                            </span>
-                          ) : (
-                            <Copy className="w-3.5 h-3.5 text-slate-400 hover:text-slate-200" />
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Actions: Verify and Close */}
-                  <div className="flex items-center gap-3">
-                    <a
-                      href={previewCert.credentialUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 py-3 px-4 rounded-xl text-sm font-semibold bg-sky-600 hover:bg-sky-500 text-white flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-sm"
-                    >
-                      <span>Verify on {previewCert.issuer}</span>
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                    <button
-                      onClick={() => setPreviewCert(null)}
-                      className={`py-3 px-4 rounded-xl text-sm font-medium border transition-colors cursor-pointer ${
+                    {/* Details Box: ID & Archived Date */}
+                    <div
+                      className={`p-4 rounded-2xl text-sm space-y-3 my-5 ${
                         darkMode
-                          ? 'border-slate-700 hover:bg-slate-800 text-slate-300'
-                          : 'border-slate-300 hover:bg-slate-100 text-slate-700'
+                          ? 'bg-slate-950/80 border border-slate-800'
+                          : 'bg-slate-50 border border-slate-200'
                       }`}
                     >
-                      Close
-                    </button>
-                  </div>
-                </div>
-              </div>
-            );
-          })()}
+                      {/* Archived Date */}
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-400 font-medium">Archived Date:</span>
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}
+                          >
+                            {previewCert.issued}
+                          </span>
+                          {modalIsNew && (
+                            <span
+                              className={`px-1.5 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-wide ${
+                                darkMode
+                                  ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                                  : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                              }`}
+                            >
+                              New
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Expiration Date - ONLY show if certificate has an expiration date */}
+                      {modalHasExpiry && (
+                        <div className="flex items-center justify-between">
+                          <span className="text-slate-400 font-medium">Expiration Date:</span>
+                          <span
+                            className={
+                              modalExpired
+                                ? 'text-red-500 font-semibold'
+                                : 'text-emerald-500 font-semibold'
+                            }
+                          >
+                            {modalExpired ? `Expired ${previewCert.expires}` : previewCert.expires}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Credential ID with Copy Button */}
+                      <div className="pt-2.5 border-t border-slate-800/60 flex items-center justify-between gap-2">
+                        <span className="text-slate-400 font-medium shrink-0">Credential ID:</span>
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          <span
+                            className="font-mono text-xs truncate text-sky-400 font-semibold"
+                            title={previewCert.credentialId}
+                          >
+                            {previewCert.credentialId}
+                          </span>
+                          <button
+                            onClick={() => handleCopy(previewCert.credentialId)}
+                            className={`p-1.5 rounded-lg cursor-pointer transition-colors shrink-0 ${
+                              darkMode
+                                ? 'hover:bg-slate-800 text-slate-300'
+                                : 'hover:bg-slate-200 text-slate-700'
+                            }`}
+                            title="Copy Credential ID"
+                          >
+                            {copiedId === previewCert.credentialId ? (
+                              <span className="flex items-center gap-1 text-emerald-500 text-xs font-semibold">
+                                <Check className="w-3.5 h-3.5" />
+                                <span>Copied</span>
+                              </span>
+                            ) : (
+                              <Copy className="w-3.5 h-3.5 text-slate-400 hover:text-slate-200" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Actions: Verify and Close */}
+                    <div className="flex items-center gap-3">
+                      <a
+                        href={previewCert.credentialUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 py-3 px-4 rounded-xl text-sm font-semibold bg-sky-600 hover:bg-sky-500 text-white flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-sm active:scale-98"
+                      >
+                        <span>Verify on {previewCert.issuer}</span>
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                      <button
+                        onClick={closeModal}
+                        className={`py-3 px-5 rounded-xl text-sm font-medium border active:scale-98 transition-all cursor-pointer min-h-[44px] flex items-center justify-center ${
+                          darkMode
+                            ? 'border-slate-700 hover:bg-slate-800 active:bg-slate-700 text-slate-300'
+                            : 'border-slate-300 hover:bg-slate-100 active:bg-slate-200 text-slate-700'
+                        }`}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              );
+            })()}
+        </AnimatePresence>
 
         {/* Certification Timeline Image Export Modal */}
         <CertificationExportModal
